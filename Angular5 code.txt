@@ -1,0 +1,6627 @@
+//Part1 to5 Angular//
+
+//list-employees.component.html//
+
+
+<div class="panel panel-primary" *ngFor="let employee of employees" >
+  <div class="panel-heading">
+    <h3 class="panel-title" > {{employee.name}} </h3>
+  </div>
+<div class="panel-body">
+  <div class="col-xs-10">
+    
+    <div class="row vertical-align">
+      <div class="col-xs-4">
+        <img class="imageClass" [src]="employee.photoPath" alt="">
+      </div>
+<div class="col-xs-8">
+
+
+  <div class="row">
+<div class="col-xs-6">
+Gender
+</div>
+<div class="col-xs-6">
+  :{{employee.gender}}
+  </div>
+</div>
+
+
+ 
+<div class="row">
+  <div class="col-xs-6">
+Date Of Birth
+  </div>
+  <div class="col-xs-6">
+   :{{employee.dateOfBirth| date:'dd/MM/y'}}
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col-xs-6">
+    Contact Preference
+    </div>
+    <div class="col-xs-6">
+      :{{employee.contactPreference}}
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-xs-6">
+      Phone
+      </div>
+      <div class="col-xs-6">
+        :{{employee.phoneNumber}}
+        </div>
+      </div>
+
+
+
+      <div class="row">
+        <div class="col-xs-6">
+        Email
+        </div>
+        <div class="col-xs-6">
+         :{{employee.email}}
+          </div>
+        </div>
+
+
+
+
+        <div class="row">
+          <div class="col-xs-6">
+          Department
+          </div>
+          <div class="col-xs-6">
+           : {{employee.department }}
+            </div>
+          </div>
+
+
+
+          
+      <div class="row">
+        <div class="col-xs-6">
+        Is Active
+        </div>
+        <div class="col-xs-6">
+         : {{employee.isActive}}
+          </div>
+        </div>
+
+
+</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+
+
+</div>
+
+--------------------------------------------------------
+//create-employee.components.ts//
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+
+
+//Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+//from a data base table
+employees: Employee[] =[
+  
+  {
+    id:1,
+      name:'Mark',
+      gender:'Male',
+      email:'mark@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : 'IT', 
+      isActive: true,
+      photoPath:'assets/images/mark.jpeg',
+  },
+  
+  {
+    id:2,
+      name:'Mary',
+      gender:'Female',
+      email:'mary@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : 'Front Office',
+      isActive: true,
+      photoPath:'assets/images/mary.jpeg',
+  },
+  
+  
+  {
+    id:3,
+      name:'John',
+      gender:'Male',
+      email:'john@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : 'Pay Roll',
+      isActive: true,
+      photoPath:'assets/images/john.jpeg',
+  },
+  
+  
+  {
+    id:4,
+      name:'Nancy',
+      gender:'Female',
+      email:'nancy@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : 'Help Desk',
+      isActive: true,
+      photoPath:'assets/images/nancy.jpeg',
+  },
+  
+  ];
+  
+ constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+------------------------------------------------------------
+//create-employee.components.css//
+.imageClass{
+    width:200px;
+    height:200px;
+}
+.vertical-align{
+    display: flex;
+    align-items: center;
+}
+-------------------------------------------------------------
+
+
+
+
+
+
+
+//Part 6.Bootstrap Radio Buttons in Angular//
+
+//employee.model.ts//
+export class Employee{
+    id: number;
+    name:string;
+    gender:string;
+    email?:string;
+    phoneNumber?:number;
+    contactPreference : string;
+    dateOfBirth: Date;
+    department : string;
+    isActive: boolean;
+    photoPath?:string;
+  
+}
+
+
+//create-employee.component.html//
+
+<form action="" #employeeForm="ngForm" (ngSubmit)="saveEmployee(employeeForm)">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Create Employee</h3>
+  </div>
+
+
+  <div class="panel-body"><!--BodyOpen-->
+    
+    <div class="form-group">
+        <label for=""> Full Name</label>
+        <input type="text" id="fullName" class="form-control" name="fullName"  [(ngModel)]="fullName">
+    </div>
+    
+
+
+    <div class="form-group">
+      <label for=""> Email</label>
+      <input type="text" id="email" class="form-control" name="email"  [(ngModel)]="email" >
+  </div>
+  
+  <div class="form-group">
+    <label for=""> Phone</label>
+    <input type="text" id="phone" class="form-control" name="phone"  [(ngModel)]="phone" >
+</div>
+
+<div class="form-group"> <!---contact Reference--->
+  <label for=""> contact Reference</label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" value="email" [(ngModel)]="contactPreference"  >
+      Email
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" value="phone"  [(ngModel)]="contactPreference"  >
+      Phone
+    </label>
+  </div>
+</div>
+
+<div class="form-group"><!---Gender--->
+  <label for=""> Gender </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" value="male" [(ngModel)]="gender"  >
+      Male
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" value="female"  [(ngModel)]="gender"  >
+      Female
+    </label>
+  </div>
+</div>
+  </div><!--BodyClose--->
+
+  <div class="panel-footer">
+     <button class="btn btn-primary" type="submit"> Save</button>
+  </div>
+
+</div>
+
+</form>
+Angular Generated Forom Model : {{employeeForm.value | json}}
+
+//create-employee.component.ts//
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+
+
+  saveEmployee(employeeForm :NgForm): void{
+    console.log(employeeForm);
+  }
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+
+//app.module.ts//
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent
+  ],
+
+
+
+  imports: [
+    BrowserModule,FormsModule,
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+------------------------------------------------------------------------------------------------
+
+
+// Part10. Angular select options from array//
+//department.model.ts// (Create File name under models)
+export class Department{
+    id:number;
+    name:string;
+}
+//
+//create-employee.component.html// before *department.model*Edit//
+
+
+
+<div>
+  <label for="department"> Department</label>
+  <select name="department" id="department"
+  [(ngModel)]="department" class="form-control">
+     <option value="1" > Help Desk</option>
+     <option value="2"> HR</option>
+     <option value="3"> IT</option>
+     <option value="1"> Payroll</option>
+     
+  </select>
+</div>
+
+//create-employee.component.html// after *department.model*Edit//
+
+
+<div>
+  <label for="department"> Department</label>
+  <select name="department" id="department"
+  [(ngModel)]="department" class="form-control">
+    <option *ngFor="let dept of departments"  [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+</div>
+------------------------------------------------------------------------------------------------
+
+
+
+//Part .11. Angular datepicker tutorial //
+//create-employee.component.html (before install ngx-bootstrap datepicker//
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="date" id="dateOfBirth" class="form-control" name="dateOfBirth"  [(ngModel)]="dateOfBirth">
+</div>
+
+//Step-1; npm install ngx-bootstrap@5.1.0//
+//Step-1A:npm install bootstrap@3 --save//
+And
+//angular.json//
+
+"styles": [
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+  "styles.css"
+]
+
+
+//Step-2:app.modules.ts//
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+//step-3: ngModule//
+@NgModule({
+  imports: [
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),  ...
+  ]
+})
+
+
+//create-employee.component.html (After install ngx-bootstrap datepicker//
+Program1:
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="text"  bsDatepicker id="dateOfBirth" class="form-control"
+   name="dateOfBirth"  [(ngModel)]="dateOfBirth">
+</div>
+Program2:
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="text"  bsDaterangepicker id="dateOfBirth" class="form-control"
+   name="dateOfBirth"  [(ngModel)]="dateOfBirth">
+</div>
+------------------------------------------------------------------------------------------------
+
+
+//PArt 12: Customise ngx-bootstrap datepicker//
+//create-employee.component.html//
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Department} from '../models/department.model';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3';
+  saveEmployee(employeeForm :NgForm): void{
+    console.log(employeeForm);
+  }
+
+  constructor() { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+--------------------------------------------------------------------
+//create-employee.component.html//
+
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="text"  bsDatepicker  [bsConfig]="datePickerConfig" id="dateOfBirth" class="form-control"
+   name="dateOfBirth"  [(ngModel)]="dateOfBirth">
+</div>
+
+--------------------------------------------------------------------
+
+
+
+
+//13. Angular ngif directive//
+//create-employee.component.html//
+
+<div class="form-group">
+  <label for="photoPath"> Photo Path</label>
+  <input type="text"  id="photoPath" class="form-control"
+   name="photoPath"  [(ngModel)]="photoPath">
+</div>
+<div class="form-group">
+      <button (click)="togglePhotoPreview()"   class="btn btn-primary">
+       {{ previewPhoto? "Hide" : "Show"}}  Preview </button>
+</div>
+
+<div class="form-group">
+ <img [src]="photoPath" height="200" width="200" alt="" *ngIf="previewPhoto" >
+</div>
+
+----------------------------------------------------------------
+////create-employee.component.ts//
+
+
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Department} from '../models/department.model';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+
+previewPhoto = false;
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3';
+  saveEmployee(employeeForm :NgForm): void{
+    console.log(employeeForm);
+  }
+
+  constructor() { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+--------------------------------------------------------------------------------------------------
+//Part 15. Displaying angular form validation error messages//
+//create-employee.component.html
+ <div class="form-group" [class.has-error]="fullNameControl.invalid && fullNameControl.touched" >
+      <label for="fullName" class="control-label"> Full Name</label>
+      <input required type="text" id="fullName" class="form-control" name="fullName"
+        [(ngModel)]="fullName" #fullNameControl="ngModel">
+        <span class="help-block" *ngIf="fullNameControl.invalid && fullNameControl.touched">
+          Full Name is required
+        </span>
+  </div>
+
+//Save button //
+
+  <div class="panel-footer">
+     <button class="btn btn-primary" type="submit" 
+      [disabled]="employeeForm.invalid" > Save</button>
+  </div>
+----------------------------------------------------------------------------------------------
+
+//Part 17: Model binding in angular template driven forms//
+//Create-Employee.component.html//
+
+<form action="" #employeeForm="ngForm" (ngSubmit)="saveEmployee(employee)" ngNativeValidate>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"> Create Employee</h3>
+  </div>
+
+
+  <div class="panel-body"><!--BodyOpen-->
+    
+
+
+    <div class="form-group" [class.has-error]="name.invalid && name.touched" >
+      <label for="name" class="control-label"> Full Name</label>
+      <input required type="text" id="name" class="form-control" name="name"
+        [(ngModel)]="employee.name" #name="ngModel">
+        <span class="help-block" *ngIf="name.invalid && name.touched">
+          Full Name is required
+        </span>
+  </div>
+
+ <!---
+    <div class="form-group">
+      <label for=""> Full Name</label>
+      <input required type="text" id="fullName" class="form-control" name="fullName"  [(ngModel)]="fullName">
+  </div>
+    
+-->
+
+    <div class="form-group">
+      <label for=""> Email</label>
+      <input required type="text" id="email" class="form-control" name="email"  [(ngModel)]="email" >
+  </div>
+  
+  <div class="form-group">
+    <label for=""> Phone</label>
+    <input type="text" id="phone" class="form-control" name="phone"  [(ngModel)]="phone" >
+</div>
+
+<div class="form-group"> <!---contact Reference--->
+  <label for=""> contact Reference</label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" value="email" [(ngModel)]="contactPreference"  >
+      Email
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" value="phone"  [(ngModel)]="contactPreference"  >
+      Phone
+    </label>
+  </div>
+</div>
+
+<div class="form-group"><!---Gender--->
+  <label for=""> Gender </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" value="male" [(ngModel)]="gender" >
+      Male
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" value="female"  [(ngModel)]="gender"  >
+      Female
+    </label>
+  </div>
+</div>
+
+<div class="form-group">
+  <div class="form-control">
+<label for="" class="checkbox-inline"> 
+  <input type="checkbox" name="isActive" [(ngModel)]="isActive" >
+    Is Active</label>
+  </div>
+</div>
+
+
+
+<div>
+  <label for="department"> Department</label>
+  <select name="department" id="department"
+  [(ngModel)]="department" class="form-control">
+    <option *ngFor="let dept of departments"  [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+</div>
+
+
+
+
+
+
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="text"  bsDatepicker  [bsConfig]="datePickerConfig" id="dateOfBirth" class="form-control"
+   name="dateOfBirth"  [(ngModel)]=" employee.dateOfBirth">
+</div>
+
+
+
+
+<div class="form-group">
+  <label for="photoPath"> Photo Path</label>
+  <input type="text"  id="photoPath" class="form-control"
+   name="photoPath"  [(ngModel)]=" employee.photoPath">
+</div>
+<div class="form-group">
+      <button (click)="togglePhotoPreview()"   class="btn btn-primary">
+       {{ previewPhoto? "Hide" : "Show"}}  Preview </button>
+</div>
+
+<div class="form-group">
+ <img [src]="photoPath" height="200" width="200" alt="" *ngIf="previewPhoto" >
+</div>
+
+
+  </div><!--BodyClose--->
+
+
+
+
+
+  <div class="panel-footer">
+     <button class="btn btn-primary" type="submit" 
+      [disabled]="employeeForm.invalid" > Save</button>
+  </div>
+
+</div>
+
+</form>
+Angular Generated Forom Model : {{employeeForm.value | json}}
+<br>
+<br>
+
+Our Employee Model: {{ employee | json }}
+-------------------------------------------------------------
+//create-employee.coomponent.ts//
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : null,
+    isActive: null,
+    photoPath:null,
+
+};
+
+
+
+previewPhoto = false;
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+  saveEmployee(newEmployee :NgForm): void{
+    console.log(newEmployee);
+  }
+
+  constructor() { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+-----------------------------------------------------------
+//18. Angular email validation example//
+//19. Angular regular expression validation//
+  <!----Email-->
+
+
+   <div class="form-group" [class.has-error]="email.invalid && email.touched" >
+    <label for="email" class="control-label"> E Mail</label>
+    <input required type="text" id="email" class="form-control" name="email"
+      [(ngModel)]="employee.email" #email="ngModel"
+      pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+      
+      <span class="help-block" *ngIf="email.errors?.required && email.touched">
+        Email is required
+      </span>
+
+      <span class="help-block" *ngIf="email.errors?.pattern && email.touched">
+        Email is Invalid
+      </span>
+</div>
+
+------------------------------------------------------------------------------------------------
+
+//20. Angular radio button validation //
+<!---Gender Reference--->
+
+
+<div class="form-group" [class.has-error] = "gender.invalid && gender.touched" >
+  <label for="" class="control-label"> Gender </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" required #gender="ngModel" value="male" [(ngModel)]="employee.gender" >
+      Male
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" required #gender="ngModel" value="female"  [(ngModel)]="employee.gender"  >
+      Female
+    </label>
+  </div>
+
+  <span class="help-block" *ngIf="gender.errors?.required && gender.touched" >
+     Gender is Required</span>
+</div>
+!---------------------------------------------------------------------------------------------->
+<!---contact Reference--->
+
+<div class="form-group" [class.has-error] = "contactPreference.invalid && contactPreference.touched" >
+  <label for="" class="control-label"> Contact Preference </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel" 
+      value="phone" [(ngModel)]="employee.contactPreference" >
+      Phone
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel"
+       value="email"  [(ngModel)]="employee.contactPreference"  >
+      Email
+    </label>
+  </div>
+
+  <span class="help-block" *ngIf="contactPreference.errors?.required && contactPreference.touched" >
+    Contact Preference is Required</span>
+</div>
+<!------------------------------------------------------->
+
+
+//Part 21-Add required attribute dynamically in angular//
+//Phone Number//10 Digit Valid Number Required//Sample only
+  
+<div class="form-group" [class.has-error]="phoneNumber.invalid && phoneNumber.touched">
+  <label for="phoneNumber" class="control-label">Phone Number</label>
+  <input id="phoneNumber" required
+          #phoneNumber="ngModel" class="form-control" type="text"
+          pattern="^((\\+91-?)|0)?[0-9]{10}$"
+          name="phoneNumber" [(ngModel)]="employee.phoneNumber">
+          
+          <span class="help-block" *ngIf="phoneNumber.errors?.required && phoneNumber.touched">
+            10 Digit Valid Number Required
+          </span>
+      
+          <span class="help-block" *ngIf="phoneNumber.errors?.pattern && phoneNumber.touched">
+            Phone Number is  Invalid
+          </span>
+</div>
+----------------------------------------------------------------------------------------
+
+
+ 
+
+
+If "Email" is selected as the "Contact Preference", then "Email" input field is required.
+
+ 
+
+If "Phone" is selected as the "Contact Preference", then "Phone" input field is required.
+
+ 
+
+//Program//
+<!---contact Reference--->
+
+<div class="form-group" [class.has-error] = "contactPreference.invalid && contactPreference.touched" >
+  <label for="" class="control-label"> Contact Preference </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel" 
+      value="phone" [(ngModel)]="employee.contactPreference" >
+      Phone
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel"
+       value="email"  [(ngModel)]="employee.contactPreference"  >
+      Email
+    </label>
+  </div>
+
+  <span class="help-block" *ngIf="contactPreference.errors?.required && contactPreference.touched" >
+    Contact Preference is Required</span>
+</div>
+<!------------------------------------------------------->
+
+   <!----Email-->
+
+   <div class="form-group" [class.has-error]="email.invalid " >
+    <label for="email" class="control-label"> E Mail</label>
+    <input [required]="contactPreference.value=='email'"
+    type="text" id="email" class="form-control" name="email"
+      [(ngModel)]="employee.email" #email="ngModel"
+      pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+      
+      <span class="help-block" *ngIf="email.errors?.required">
+        Email is required
+      </span>
+
+      <span class="help-block" *ngIf="email.errors?.pattern">
+        Email is Invalid
+      </span>
+</div>
+
+
+
+<!----Phone Number-->
+<div class="form-group" [class.has-error]="phoneNumber.invalid">
+  <label for="phoneNumber" class="control-label">Phone Number</label>
+  <input id="phoneNumber" [required]="contactPreference.value=='phone'"
+          #phoneNumber="ngModel" class="form-control" type="text"
+          pattern="^((\\+91-?)|0)?[0-9]{10}$"
+          name="phoneNumber" [(ngModel)]="employee.phoneNumber">
+          
+          <span class="help-block" *ngIf="phoneNumber.errors?.required">
+            10 Digit Valid Number Required
+          </span>
+      
+          <span class="help-block" *ngIf="phoneNumber.errors?.pattern">
+            Phone Number is  Invalid
+          </span>
+</div>
+----------------------------------------------------------------------------------------------
+
+
+<!----  Is Active Program-->
+//Model-1//
+<div class="form-group" [class.has-error]="isActive.invalid && isActive.touched" >
+  <div class="form-control">
+<label for="" class="checkbox-inline control-label"> 
+  <input required type="checkbox" name="isActive" [(ngModel)]="employee.isActive"
+   #isActive="ngModel"  >
+    Is Active</label>
+  </div>
+
+  <span class="help-block" *ngIf="isActive.errors?.required && isActive.touched" >
+    Is Active is Required
+  </span>
+</div>
+
+
+//Model-2//
+<div class="form-group" [class.has-error]="isActive.invalid" >
+  <div class="form-control">
+<label for="" class="checkbox-inline control-label"> 
+  <input [required]="employee.isActive==null" type="checkbox" name="isActive" [(ngModel)]="employee.isActive"
+   #isActive="ngModel"  >
+    Is Active</label>
+  </div>
+
+  <span class="help-block" *ngIf="isActive.errors?.required" >
+    Is Active is Required
+  </span>
+</div>
+
+---------------------------------------------------------------------------------------------
+
+
+
+//Part:23-Angular select list validation
+<!--------------------Department------------------->
+//Option 1//
+<div class="form-group"
+     [class.has-error]="department.touched && department.invalid">
+  <label for="department" class="control-label">Department</label>
+  <select id="department" required #department="ngModel"
+          name="department" [(ngModel)]="employee.department"
+          class="form-control">
+    <option *ngFor="let dept of departments" [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+  <span class="help-block"
+        *ngIf="department.touched && department.invalid">
+    Department is required
+  </span>
+</div>
+
+
+
+Part 24-  Angular value vs ngValue
+//Option 1//
+//create-employee.component.html//
+<div class="form-group"
+     [class.has-error]="department.touched && department.invalid">
+  <label for="department" class="control-label">
+    Department
+  </label>
+  <select id="department" required #department="ngModel" name="department"
+          [(ngModel)]="employee.department" class="form-control">
+    <option [ngValue]="null">Select Department</option> 
+    <option *ngFor="let dept of departments" [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+  <span class="help-block"
+        *ngIf="department.touched && department.invalid">
+    Department is required
+  </span>
+</div>
+
+//create-employee.component.ts//
+employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : '-1', /(or) department : 'null',
+    isActive: null,
+    photoPath:null,
+
+};
+
+------------------------------------------------------------------------------------------------
+Option=2
+<div class="form-group"
+     [class.has-error]="department.touched && department.invalid">
+  <label for="department" class="control-label">Department</label>
+  <select id="department" required #department="ngModel"
+          name="department" [(ngModel)]="employee.department"
+          class="form-control">
+    <option disabled [ngValue]="null"> Select Department </option>      
+    <option *ngFor="let dept of departments" [ngValue]="dept">
+      {{dept.name}}
+    </option>
+  </select>
+  <span class="help-block"
+        *ngIf="department.touched && department.invalid">
+    Department is required
+  </span>
+</div>
+
+<!------------------------------------------------------------------------------------------------->
+
+25. Angular custom validator example template driven forms 
+26. Angular select list required custom validator
+//Steps 1- Create/"Shared" Folder/inside shared folder "select-required-validator.directive.ts"coding:
+
+import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
+import { Directive,Input } from '@angular/core'
+
+@Directive({
+    selector:'[appSelectValidator]',
+    providers: [
+            {
+                provide:NG_VALIDATORS,
+                useExisting: SelectRequiredValidatorDirective,
+                multi: true
+            }
+        ]
+    
+})
+
+export class SelectRequiredValidatorDirective implements Validator{
+    @Input() appSelectValidator: string;
+    validate(control: AbstractControl):{[key:string]: any} | null{
+        return control.value === this.appSelectValidator ? {'defaultSelected': true}:null;
+    }
+} 
+
+step -2: In "app.module.ts"//
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+
+
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective
+  ],
+
+
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+Step-3:
+Create-employee.component.ts
+
+export class CreateEmployeeComponent implements OnInit {
+employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : 'select',
+    isActive: null,
+    photoPath:null,
+
+};
+
+Step4:
+Create-employee.component.html;
+
+
+<div class="form-group"
+     [class.has-error]="department.touched && department.errors?.defaultSelected">
+  <label for="department" class="control-label">Department</label>
+  <select id="department" #department="ngModel" name="department"
+          [(ngModel)]="employee.department" appSelectValidator="select"
+          class="form-control">
+    <option value="select">Select Department</option>
+    <option *ngFor="let dept of departments" [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+  <span class="help-block"
+        *ngIf="department.touched && department.errors?.defaultSelected">
+    Department is required
+  </span>
+</div>
+
+-----------------------------------------------------------------------------------------------
+
+
+
+//Password and confirm password//
+27. Angular password and confirm password validation |
+28. Angular trigger validation manually |
+29. Angular form group validation |
+Step 1 . "Create confirm-equal-validator.directive.ts" under folder Shared
+Coding:
+import { Validator, NG_VALIDATORS, AbstractControl } from '@angular/forms';
+import { Directive } from '@angular/core';
+
+@Directive({
+    selector: '[appConfirmEqualValidator]',
+    providers: [{
+        provide: NG_VALIDATORS,
+        useExisting: ConfirmEqualValidatorDirective,
+        multi: true
+    }]
+})
+export class ConfirmEqualValidatorDirective implements Validator {
+    validate(passwordGroup: AbstractControl): { [key: string]: any } | null {
+        const passwordField = passwordGroup.get('password');
+        const confirmPasswordField = passwordGroup.get('confirmPassword');
+        if (passwordField && confirmPasswordField &&
+            passwordField.value !== confirmPasswordField.value) {
+            return { 'notEqual': true };
+        }
+
+        return null;
+    }
+}
+
+Step-2:
+Import in "AppModule.ts"
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective
+  ],
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+Step-3:"create-employee.component.html",
+coding:
+<!-------PassWord-->
+<div ngModelGroup="passwordGroup" #passwordGroup="ngModelGroup"
+      appConfirmEqualValidator [class.has-error]="passwordGroup.errors?.notEqual
+      && !confirmPassword.errors?.required">
+
+  <div class="form-group"
+        [class.has-error]="password.touched && password.invalid">
+    <label for="password" class="control-label">Password</label>
+    <input name="password" required type="text" class="form-control"
+            [(ngModel)]="employee.password" #password="ngModel">
+    <span class="help-block"
+          *ngIf="password.touched && password.errors?.required">
+      Password is required
+    </span>
+  </div>
+
+  <div class="form-group"
+        [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
+    <label for="confirmPassword" class="control-label">Confirm Password</label>
+    <input name="confirmPassword" required type="text" class="form-control"
+            [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
+    <span class="help-block"
+          *ngIf="confirmPassword.touched && confirmPassword.errors?.required">
+      Confirm Password is required
+    </span>
+    <span class="help-block" *ngIf="confirmPassword.touched &&
+          passwordGroup.errors?.notEqual && !confirmPassword.errors?.required">
+      Password and Confirm Password does not match
+    </span>
+  </div>
+
+</div>
+<!----PassWord End-------------------------------------------------------------------->
+
+//30. Angular 5 services tutorial//
+
+Step:1 Create "employee.service.ts " under employee folder;
+//employee.service.ts -codeing//
+import {Injectable } from '@angular/core';
+import { Employee} from '../models/employee.model';
+
+@Injectable()
+export class EmployeeService{
+private listEmployee: Employee[] =[
+  
+    {
+      id:1,
+        name:'Mark',
+        gender:'Male',
+        email:'mark@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : 'IT', 
+        isActive: true,
+        photoPath:'assets/images/mark.jpeg',
+    },
+    
+    {
+      id:2,
+        name:'Mary',
+        gender:'Female',
+        email:'mary@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : 'Front Office',
+        isActive: true,
+        photoPath:'assets/images/mary.jpeg',
+    },
+    
+    
+    {
+      id:3,
+        name:'John',
+        gender:'Male',
+        email:'john@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : 'Pay Roll',
+        isActive: true,
+        photoPath:'assets/images/john.jpeg',
+    },
+    
+    
+    {
+      id:4,
+        name:'Nancy',
+        gender:'Female',
+        email:'nancy@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : 'Help Desk',
+        isActive: true,
+        photoPath:'assets/images/nancy.jpeg',
+    },
+    
+    ];
+    getEmployees():Employee[]{
+        return this.listEmployee;
+    }
+
+}
+
+-----------------------------------------
+Step2::list-employee.components.ts" Coding
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+//import EmployeeService
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+
+
+//Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+//from a data base table
+employees: Employee[];
+
+   constructor( private _employeeService:EmployeeService) { }
+
+  ngOnInit() {
+    this.employees = this._employeeService.getEmployees();
+  }
+
+}
+-------------------------------------------------------------
+//"app.module.ts" Coding//
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+
+
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './employees/employee.service';
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective,
+    
+  ],
+
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+---------------------------------------------------------------------------------------------
+
+
+//Part -31 Create operation in angular//
+step-1: Add Code in "employee.service.ts"
+//  Code;//
+    save(employee:Employee){
+        this.listEmployees.push(employee);
+    }
+
+Step-2:"create-employee.component.ts"
+//code//
+import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { Router } from '@angular/router';
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : 'select',
+    isActive: null,
+    photoPath:null,
+
+};
+
+
+
+previewPhoto = false;
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  saveEmployee(): void{
+    this._employeeService.save(this.employee);
+    this._router.navigate(['list']);
+
+  }
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+
+//Step-3//
+//"create-employee.component.html" 
+//code//
+
+<form action="" #employeeForm="ngForm" (ngSubmit)="saveEmployee()" ngNativeValidate>
+
+---------------------------------------------------------------------------------------------------
+
+
+Part 32-Angular switch case Example
+Step 1:In "employee.service.ts" change department:'IT' all string into number 1,2,3,4 etc and save. 
+//Code//
+{
+      id:1,
+        name:'Mark',
+        gender:'Male',
+        email:'mark@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : '1', 
+        isActive: true,
+        photoPath:'assets/images/mark.jpeg',
+    },
+Step 2: In "list-employee.component.html"  edit code like this
+//Code//
+
+        <div class="row">
+          <div class="col-xs-6">
+          Department
+          </div>
+          <div class="col-xs-6" [ngSwitch]="employee.department" >
+           :
+           <span *ngSwitchCase="1" > Help Desk</span>
+           <span *ngSwitchCase="2" > HR</span>
+           <span *ngSwitchCase="3" > IT</span>
+           <span *ngSwitchCase="4" > Payroll</span>
+           <span *ngSwitchDefault > Help Desk</span>
+            </div>
+          </div>
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+//33. Pass data from parent to child component in angular//
+Step-1: ng g c employees\DisplayEmployee --no-spec --flat
+step-2:"display-employee.component.html 
+coding:
+<div class="panel panel-primary" >
+<div class="panel-heading">
+  <h3 class="panel-title" > {{employee.name}} </h3>
+</div>
+<div class="panel-body">
+<div class="col-xs-10">
+  
+  <div class="row vertical-align">
+    <div class="col-xs-4">
+      <img class="imageClass" [src]="employee.photoPath" alt="">
+    </div>
+<div class="col-xs-8">
+
+
+<div class="row">
+<div class="col-xs-6">
+Gender
+</div>
+<div class="col-xs-6">
+:{{employee.gender}}
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col-xs-6">
+Date Of Birth
+</div>
+<div class="col-xs-6">
+ :{{employee.dateOfBirth| date:'dd/MM/y'}}
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-6">
+  Contact Preference
+  </div>
+  <div class="col-xs-6">
+    :{{employee.contactPreference}}
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-xs-6">
+    Phone
+    </div>
+    <div class="col-xs-6">
+      :{{employee.phoneNumber}}
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-xs-6">
+      Email
+      </div>
+      <div class="col-xs-6">
+       :{{employee.email}}
+        </div>
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-xs-6">
+        Department
+        </div>
+        <div class="col-xs-6" [ngSwitch]="employee.department" >
+         :
+         <span *ngSwitchCase="1" > Help Desk</span>
+         <span *ngSwitchCase="2" > HR</span>
+         <span *ngSwitchCase="3" > IT</span>
+         <span *ngSwitchCase="4" > Payroll</span>
+         <span *ngSwitchDefault > Help Desk</span>
+          </div>
+        </div>
+
+
+
+        
+    <div class="row">
+      <div class="col-xs-6">
+      Is Active
+      </div>
+      <div class="col-xs-6">
+       : {{employee.isActive}}
+        </div>
+      </div>
+
+
+</div>
+  </div>
+
+</div>
+
+</div>
+</div>
+
+------------------------------
+Step3:display-employee.component.ts
+coding:
+import { Component, Input, OnInit } from '@angular/core';
+import { Employee} from '../models/employee.model'
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+@Input() employee:Employee;
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+--------------------------------
+step4:list-employees.component.html
+Coding:
+<div *ngFor="let employee of employees" >
+ <app-display-employee [employee]="employee" ></app-display-employee>
+</div>
+-------------------------------
+step:5 display-employee.component.css
+coding:
+.imageClass{
+    width:200px;
+    height:200px;
+}
+.vertical-align{
+    display: flex;
+    align-items: center;
+}
+----------------------------------------------------------------------------------------------------
+
+
+
+//39. Angular route guards//
+Step1: Create file un "employees" name "create-employee-can-deactivate-gaurd.service.ts"
+coding:
+
+import { CanDeactivate } from '@angular/router';
+import { Injectable } from '@angular/core';
+
+import { CreateEmployeeComponent } from './create-employee.component';
+
+@Injectable()
+export class CreateEmployeeCanDeactivateGaurdService
+implements CanDeactivate<CreateEmployeeComponent>
+{
+
+    constructor(){}
+    canDeactivate(component: CreateEmployeeComponent): boolean{
+        if(component.createEmployeeForm.dirty){
+            return confirm('Are you sure you want to discard your changes?');
+        }
+        return true;
+    }
+}
+----------------------------------------------------
+
+
+
+Step2:create-employee.component.ts
+Coding:
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { Router } from '@angular/router';
+
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+
+
+  employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : 'select',
+    isActive: null,
+    photoPath:null,
+
+};
+
+
+
+previewPhoto = false;
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+  saveEmployee(): void{
+    this._employeeService.save(this.employee);
+    this._router.navigate(['list']);
+
+  }
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+----------------------------------------------------
+
+Steps:3,
+//"app.module.ts"//
+//Coding//
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+
+
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './employees/employee.service';
+import { DisplayEmployeeComponent } from './employees/display-employee.component';
+import { CreateEmployeeCanDeactivateGaurdService } from './employees/create-employee-can-deactivate-gaurd.service';
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create',
+   component: CreateEmployeeComponent,
+   canDeactivate : [CreateEmployeeCanDeactivateGaurdService]
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective,
+    DisplayEmployeeComponent,
+    
+  ],
+
+
+
+
+
+
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [EmployeeService,CreateEmployeeCanDeactivateGaurdService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+------------------------------------------------------------------------------------------------------------
+
+//40. Angular route params//
+
+Step-1:
+ng g c employees/employee-details --no-spec --flat
+-------------------------------------------------------
+Step-2:
+in "app.module.ts"
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create',
+   component: CreateEmployeeComponent,
+   canDeactivate : [CreateEmployeeCanDeactivateGaurdService] 
+  },
+  { path: 'employees/:id', component: EmployeeDetailsComponent},
+
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+  
+];
+-------------------------------------------------------
+
+Step-3
+in "app.component.html"
+<div class="container" >
+  <nav class="navbar navbar-default">
+
+    <ul class="nav navbar-nav">
+      <li>
+          <a  routerLink ="list"> List</a>
+
+      </li>
+      
+      <li>
+        <a  routerLink ="create"> Create</a>
+
+    </li>
+
+     
+    <li> 
+      <a  [routerLink] ="['employees',2]">
+         Get Employee With Id 2 
+      </a>
+       
+  </li>
+
+    <li>
+      
+      <a href="https://www.pragimtech.com/"> Pragim Tech</a>
+
+  </li>
+  <li>
+      
+    <a href="https://www.google.com/"> Google </a>
+
+</li>
+
+    </ul>
+
+  </nav>
+
+  
+<router-outlet></router-outlet>
+
+</div>
+-------------------------------------------------------
+Step-4
+in"list-employees.components.ts"
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+//import EmployeeService
+import { EmployeeService } from './employee.service';
+import {Router } from '@angular/router'
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+
+
+//Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+//from a data base table
+employees: Employee[];
+
+   constructor( private _employeeService:EmployeeService,
+                private _router: Router) { }
+
+  ngOnInit() {
+    this.employees = this._employeeService.getEmployees();
+  }
+  onClick (employeeId: number){
+    this._router.navigate(['/employees',employeeId]);
+  }
+
+}
+----------------------------------------------------------
+Step-5,
+in "list-employee.component.css"
+.imageClass{
+    width:200px;
+    height:200px;
+}
+.vertical-align{
+    display: flex;
+    align-items: center;
+}
+.pointerCursor{
+    cursor: pointer;
+}
+------------------------------------------------------------------
+Step-6,
+in "list-employee.component.html"
+<div *ngFor="let employee of employees" >
+    <div (click)="onClick(employee.id)" class="pointerCursor"  >
+ <app-display-employee [employee]="employee" >
+
+ </app-display-employee>
+</div> 
+</div>
+------------------------------------------------------------------------------------------------------------
+ 
+
+
+//41. Angular read route parameters//
+Step-1,
+in "employee.service.ts"
+coding:
+import {Injectable } from '@angular/core';
+import { Employee} from '../models/employee.model';
+
+@Injectable()
+export class EmployeeService{
+private listEmployees: Employee[] =[
+  
+    {
+      id:1,
+        name:'Mark',
+        gender:'Male',
+        email:'mark@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : '1', 
+        isActive: true,
+        photoPath:'assets/images/mark.jpeg',
+    },
+    
+    {
+      id:2,
+        name:'Mary',
+        gender:'Female',
+        email:'mary@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : '2',
+        isActive: true,
+        photoPath:'assets/images/mary.jpeg',
+    },
+    
+    
+    {
+      id:3,
+        name:'John',
+        gender:'Male',
+        email:'john@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'3',
+        dateOfBirth: new Date('10/12/1988'),
+        department : 'Pay Roll',
+        isActive: true,
+        photoPath:'assets/images/john.jpeg',
+    },
+    
+    
+    {
+      id:4,
+        name:'Nancy',
+        gender:'Female',
+        email:'nancy@gmail.com',
+        phoneNumber:9092380057,
+        contactPreference :'Phone',
+        dateOfBirth: new Date('10/12/1988'),
+        department : '4',
+        isActive: true,
+        photoPath:'assets/images/nancy.jpeg',
+    }, 
+    
+    ];
+    getEmployees():Employee[]{
+        return this.listEmployees;
+    }
+
+
+
+    getEmployee(id:number):Employee{
+      return this.listEmployees.find(e => e.id === id);
+  }
+
+
+    save(employee:Employee){
+        this.listEmployees.push(employee);
+    }
+
+}
+-------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+Step-2,
+in "employee-details.component.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import {EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-employee-details',
+  templateUrl: './employee-details.component.html',
+  styleUrls: ['./employee-details.component.css']
+})
+export class EmployeeDetailsComponent implements OnInit {
+employee: Employee;
+
+
+  constructor( private _route:ActivatedRoute,
+    private _employeeService:EmployeeService ) { }
+
+  ngOnInit() {
+    const id = +this._route.snapshot.paramMap.get('id');
+    this.employee = this._employeeService.getEmployee(id);
+  }
+
+}
+-----------------------------------------------------------------------------------------
+Step-3,
+in "employee-details.component.html"
+//copy entire  code from "display-employee.component.html"//
+Coding:
+<div class="panel panel-primary" >
+  <div class="panel-heading">
+    <h3 class="panel-title" > {{employee.name}} </h3>
+  </div>
+  <div class="panel-body">
+  <div class="col-xs-10">
+    
+    <div class="row vertical-align">
+      <div class="col-xs-4">
+        <img class="imageClass" [src]="employee.photoPath" alt="">
+      </div>
+  <div class="col-xs-8">
+  
+  
+  <div class="row">
+  <div class="col-xs-6">
+  Gender
+  </div>
+  <div class="col-xs-6">
+  :{{employee.gender}}
+  </div>
+  </div>
+  
+  
+  
+  <div class="row">
+  <div class="col-xs-6">
+  Date Of Birth
+  </div>
+  <div class="col-xs-6">
+   :{{employee.dateOfBirth| date:'dd/MM/y'}}
+    </div>
+  </div>
+  
+  
+  <div class="row">
+    <div class="col-xs-6">
+    Contact Preference
+    </div>
+    <div class="col-xs-6">
+      :{{employee.contactPreference}}
+      </div>
+    </div>
+  
+  
+  
+    <div class="row">
+      <div class="col-xs-6">
+      Phone
+      </div>
+      <div class="col-xs-6">
+        :{{employee.phoneNumber}}
+        </div>
+      </div>
+  
+  
+  
+      <div class="row">
+        <div class="col-xs-6">
+        Email
+        </div>
+        <div class="col-xs-6">
+         :{{employee.email}}
+          </div>
+        </div>
+  
+  
+  
+  
+        <div class="row">
+          <div class="col-xs-6">
+          Department
+          </div>
+          <div class="col-xs-6" [ngSwitch]="employee.department" >
+           :
+           <span *ngSwitchCase="1" > Help Desk</span>
+           <span *ngSwitchCase="2" > HR</span>
+           <span *ngSwitchCase="3" > IT</span>
+           <span *ngSwitchCase="4" > Payroll</span>
+           <span *ngSwitchDefault > Help Desk</span>
+            </div>
+          </div>
+  
+  
+  
+          
+      <div class="row">
+        <div class="col-xs-6">
+        Is Active
+        </div>
+        <div class="col-xs-6">
+         : {{employee.isActive}}
+          </div>
+        </div>
+  
+  
+  </div>
+    </div>
+  
+  </div>
+  
+  </div>
+<div class="panel-footer">
+  <a href="" class="btn btn-primary" routerLink="/list" > 
+    Back To List
+  </a>
+
+</div>
+
+  </div>
+-------------------------------------------------------------------
+
+Step:4,
+in "employee-details.component.css"
+coding,
+.imageClass{
+    width:200px;
+    height:200px;
+}
+.vertical-align{
+    display: flex;
+    align-items: center;
+}
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+Part 42. Subscribe to angular route parameter changes
+Step-1,
+in "employee-details.component.html" 
+coding:
+<div class="panel-footer">
+  
+  <a href="" class="btn btn-primary" routerLink="/list" > 
+    Back To List
+  </a>
+   <button class="btn btn-primary pull-right"
+    (click)="viewNextEmployee()"  > 
+     View Next Employee
+
+   </button>
+
+</div>
+----------------------------------------------------------------------------------------------------------
+Step-2,
+in "Employee-details.component.ts"
+coding:
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-employee-details',
+  templateUrl: './employee-details.component.html',
+  styleUrls: ['./employee-details.component.css']
+})
+export class EmployeeDetailsComponent implements OnInit {
+  employee: Employee;
+  private _id: number;
+
+  constructor(private _route: ActivatedRoute,
+    private _employeeService: EmployeeService,
+    private _router:Router) { }
+
+  ngOnInit() {
+   this._route.paramMap.subscribe(params =>{
+   this._id = +params.get('id');
+   this.employee = this._employeeService.getEmployee(this._id);
+  });
+    
+  }
+
+  viewNextEmployee() {
+    if (this._id < 4) {
+     this._id = this._id + 1;
+   }
+   else{
+     this._id = 1;
+   }
+
+   this._router.navigate(['/employees',this._id]);
+  }
+
+}
+---------------------------------------------------------------------------------------------------------
+  
+
+
+
+
+
+
+
+
+
+
+
+
+43. Angular optional route parameters
+Step-1,
+in "employee-details.component.html"
+Copy and edit part 42. 
+ <a class="btn btn-primary" [routerLink]="['/list',{id:employee.id}]">
+    Back to List
+  </a>
+---------------------------------------------------------------------------------------------------------
+Step-2,
+in "display-employee.components.ts"
+
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Employee} from '../models/employee.model'
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+@Input() employee:Employee;
+  private selectedEmployeeId: number;
+  
+constructor( private _route:ActivatedRoute) { }
+
+  ngOnInit() {
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+}
+---------------------------------------------------------------------------------------------------------
+
+Step-3,
+in "display-employee.component.html"
+"Edit first line code"
+<div class="panel panel-primary" [class.panel-success]="selectedEmployeeId  === employee.id" >
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+44. Angular required route parameter vs optional route parameter | Thoery
+45. Angular form reset | Theory
+46. JavaScript objects and reference variables
+in "create-employee.component.ts" RESET method 
+coding;
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+  employee : Employee={
+    id: null,
+    name:null,
+    gender:null,
+    email:null,
+    phoneNumber:null,
+    contactPreference : null,
+    dateOfBirth: null,
+    department : 'select',
+    isActive: null,
+    photoPath:null,
+
+};
+
+
+
+previewPhoto = false;
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  saveEmployee(): void{
+    const newEmployee: Employee = Object.assign({},this.employee);
+    this._employeeService.save(newEmployee);
+    this.createEmployeeForm.reset( );
+    this._router.navigate(['list']);
+
+  }
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+  }
+
+}
+---------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+47. Filter pipe in angular
+step-1,
+create under employee file name as "employee-filter.pipe.ts"
+coding inside employee-filter.pipe.ts/
+
+import { Pipe, PipeTransform,  } from '@angular/core';
+import { Employee } from '../models/employee.model';
+
+@Pipe({
+    name:'employeeFilter'
+})
+
+export class EmployeeFilterPipe implements PipeTransform{
+    
+    transform(employees: Employee[], searchTerm: string):Employee[]{
+      if(!employees || !searchTerm)  {
+          return employees;
+      }
+
+      return employees.filter(employee =>
+        employee.name.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1);
+    }
+
+} 
+------------------------------------------------------------------------------------------
+Step-2,
+in " list-employees.component.ts",
+coding,
+searchTerm: string;
+------------------------------------------------------------------------------------------------
+
+Step-3,
+in "list-employees.component.html",
+coding,
+<div class="form-group">
+    <input type="text" class="form-control" placeholder="Search By Name"
+            style="width:300px" [(ngModel)]="searchTerm" />
+</div>
+
+<div *ngFor="let employee of employees  | employeeFilter:searchTerm">
+    <div (click)="onClick(employee.id)" class="pointerCursor">
+        <app-display-employee [employee]="employee">
+
+        </app-display-employee>
+    </div>
+</div>
+
+------------------------------------------------------------------------------------------
+
+
+Step-4,
+in "app.module.ts"
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './employees/employee.service';
+import { DisplayEmployeeComponent } from './employees/display-employee.component';
+import { CreateEmployeeCanDeactivateGaurdService } from './employees/create-employee-can-deactivate-gaurd.service';
+import { EmployeeDetailsComponent } from './employees/employee-details.component';
+import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
+
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create',
+   component: CreateEmployeeComponent,
+   canDeactivate : [CreateEmployeeCanDeactivateGaurdService] 
+  },
+  { path: 'employees/:id', component: EmployeeDetailsComponent},
+
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+  
+];
+
+
+
+@NgModule({
+  declarations: [  
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective,
+    DisplayEmployeeComponent,
+    EmployeeDetailsComponent,
+    EmployeeFilterPipe,
+   ],
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [EmployeeService,CreateEmployeeCanDeactivateGaurdService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+-------------------------------------------------------------------------------------------------------
+
+48. Angular pure pipe | Theory
+49. Angular impure pipe | Theory
+50. Data filtering in angular component| Theory
+
+51. Angular query params
+Step-1,
+in"employee-details.component.html"
+method:"preserve",
+http://localhost:4200/employees/4?searchTerm=nanc&testParam=testValue
+
+coding:
+<div class="panel panel-primary" >
+  <div class="panel-heading">
+    <h3 class="panel-title" > {{employee.name}} </h3>
+  </div>
+  <div class="panel-body">
+  <div class="col-xs-10">
+    
+    <div class="row vertical-align">
+      <div class="col-xs-4">
+        <img class="imageClass" [src]="employee.photoPath" alt="">
+      </div>
+  <div class="col-xs-8">
+  
+  
+  <div class="row">
+  <div class="col-xs-6">
+  Gender
+  </div>
+  <div class="col-xs-6">
+  :{{employee.gender}}
+  </div>
+  </div>
+  
+  
+  
+  <div class="row">
+  <div class="col-xs-6">
+  Date Of Birth
+  </div>
+  <div class="col-xs-6">
+   :{{employee.dateOfBirth| date:'dd/MM/y'}}
+    </div>
+  </div>
+  
+  
+  <div class="row">
+    <div class="col-xs-6">
+    Contact Preference
+    </div>
+    <div class="col-xs-6">
+      :{{employee.contactPreference}}
+      </div>
+    </div>
+  
+  
+  
+    <div class="row">
+      <div class="col-xs-6">
+      Phone
+      </div>
+      <div class="col-xs-6">
+        :{{employee.phoneNumber}}
+        </div>
+      </div>
+  
+  
+  
+      <div class="row">
+        <div class="col-xs-6">
+        Email
+        </div>
+        <div class="col-xs-6">
+         :{{employee.email}}
+          </div>
+        </div>
+  
+  
+  
+  
+        <div class="row">
+          <div class="col-xs-6">
+          Department
+          </div>
+          <div class="col-xs-6" [ngSwitch]="employee.department" >
+           :
+           <span *ngSwitchCase="1" > Help Desk</span>
+           <span *ngSwitchCase="2" > HR</span>
+           <span *ngSwitchCase="3" > IT</span>
+           <span *ngSwitchCase="4" > Payroll</span>
+           <span *ngSwitchDefault > Help Desk</span>
+            </div>
+          </div>
+  
+  
+  
+          
+      <div class="row">
+        <div class="col-xs-6">
+        Is Active
+        </div>
+        <div class="col-xs-6">
+         : {{employee.isActive}}
+          </div>
+        </div>
+  
+  
+  </div>
+    </div>
+  
+  </div>
+  
+  </div>
+<div class="panel-footer">
+  
+  <a class="btn btn-primary" [routerLink]="['/list']"
+  queryParamsHandling="preserve">
+    Back to List
+  </a>
+   <button class="btn btn-primary pull-right"
+    (click)="viewNextEmployee()"  > 
+     View Next Employee
+
+   </button>
+
+</div>
+
+  </div>
+--------------------------------------------------------------------------------------------------
+
+
+Step-2,
+in "employee-details.component.ts
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-employee-details',
+  templateUrl: './employee-details.component.html',
+  styleUrls: ['./employee-details.component.css']
+})
+export class EmployeeDetailsComponent implements OnInit {
+  employee: Employee;
+  private _id: number;
+
+  constructor(private _route: ActivatedRoute,
+    private _employeeService: EmployeeService,
+    private _router:Router) { }
+
+  ngOnInit() {
+   this._route.paramMap.subscribe(params =>{
+   this._id = +params.get('id');
+   this.employee = this._employeeService.getEmployee(this._id);
+  });
+    
+  }
+
+  viewNextEmployee() {
+    if (this._id < 4) {
+     this._id = this._id + 1;
+   }
+   else{
+     this._id = 1;
+   }
+
+   this._router.navigate(['/employees', this._id], {
+    queryParamsHandling: 'preserve'
+  });
+
+
+  }
+
+}
+
+
+--------------------------------------------------------------------------------------------------
+
+Method 2,
+
+in"html"
+<a [routerLink]="['/list']"
+   [queryParams]="{'newParam': 'newValue'}" queryParamsHandling="merge">
+    Back to List
+</a>
+
+in"ts"
+
+
+this._router.navigate(['/employees', this._id], {
+  queryParams: { 'newParam': 'newValue' },
+  queryParamsHandling: 'merge'
+});
+
+
+"Merge"
+//http://localhost:4200/employees/2?testParam=testValue&newParam=newValue
+--------------------------------------------------------------------------------------------------
+
+52. Angular read query string parameters |
+in "list-employees.components.ts"
+coding
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+//import EmployeeService
+import { EmployeeService } from './employee.service';
+import {ActivatedRoute, Router } from '@angular/router'
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  searchTerm: string;
+
+//Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+//from a data base table
+employees: Employee[];
+  filteredEmployees: Employee[];
+
+   constructor( private _employeeService:EmployeeService,
+                private _router: Router,
+                private _route: ActivatedRoute) { }
+
+
+
+Method-1,
+  ngOnInit() {
+    this.employees = this._employeeService.getEmployees();
+        if(this._route.snapshot.paramMap.has('searchTerm')){
+            this.searchTerm = this._route.snapshot.paramMap.get('searchTerm');
+                }
+                else{
+                  this.filteredEmployees = this.employees;
+                }
+  }
+//http://localhost:4200/employees/4?searchTerm=nan&testParam=testValue//
+
+
+
+
+
+  onClick (employeeId: number){
+     this._router.navigate(['/employees',employeeId],{
+       queryParams:{'searchTerm': this.searchTerm, 'testParam':'testValue'}
+     });
+  }
+
+}
+
+
+------------------------------------------------------------------------------------------------
+
+
+Method-2, 
+ ngOnInit() {
+    this.employees = this._employeeService.getEmployees();
+    this._route.queryParamMap.subscribe((queryParams) => {
+      if (queryParams.has('searchTerm')) {
+        this.searchTerm = queryParams.get('searchTerm');
+      } else {
+        this.filteredEmployees = this.employees;
+      }
+    });
+  }
+//http://localhost:4200/employees/4?searchTerm=&testParam=testValue//
+
+--------------------------------------------------------------------------------------------------------
+
+
+53. Create observable from array 
+Step-1,
+in"employee.service.ts"
+Coding:
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+
+@Injectable()
+
+export class EmployeeService {
+private listEmployees: Employee[] = [
+  
+  {
+    id:1,
+      name:'Mark',
+      gender:'Male',
+      email:'mark@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '1', 
+      isActive: true,
+      photoPath:'assets/images/mark.jpeg',
+  },
+  
+  {
+    id:2,
+      name:'Mary',
+      gender:'Female',
+      email:'mary@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '2',
+      isActive: true,
+      photoPath:'assets/images/mary.jpeg',
+  },
+  
+  
+  {
+    id:3,
+      name:'John',
+      gender:'Male',
+      email:'john@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'3',
+      dateOfBirth: new Date('10/12/1988'),
+      department : 'Pay Roll',
+      isActive: true,
+      photoPath:'assets/images/john.jpeg',
+  },
+  
+  
+  {
+    id:4,
+      name:'Nancy',
+      gender:'Female', 
+      email:'nancy@gmail.com',
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '4',
+      isActive: true,
+      photoPath:'assets/images/nancy.jpeg',
+  }, 
+  
+  ];
+
+getEmployee(id: number): Employee {
+return this.listEmployees.find(e => e.id === id);
+}
+
+save(employee: Employee) {
+this.listEmployees.push(employee);
+}
+getEmployees(): Observable<Employee[]>   {
+//return Observable.of(this.listEmployees);
+return of(this.listEmployees).pipe(delay(2000));
+}
+}
+----------------------------------------------------------------------
+
+Step-2,
+"list-employee.components.ts"
+Coding,
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+//import EmployeeService
+import { EmployeeService } from './employee.service';
+import { ActivatedRoute, Router } from '@angular/router'
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  searchTerm: string;
+
+  //Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+  //from a data base table
+  employees: Employee[];
+  filteredEmployees: Employee[];
+
+  constructor(private _employeeService: EmployeeService,
+    private _router: Router,
+    private _route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this._employeeService.getEmployees().subscribe((empList) => {
+      this.employees = empList;
+      this._route.queryParamMap.subscribe(params => {
+        if (params.has('searchTerm')) {
+          this.searchTerm = params.get('searchTerm');
+        } else {
+          this.filteredEmployees = this.employees;
+          console.log(this.employees.length);
+        }
+      });
+
+    });
+  }
+
+
+
+  onClick(employeeId: number) {
+    this._router.navigate(['/employees', employeeId], {
+      queryParams: { 'searchTerm': this.searchTerm, 'testParam': 'testValue' }
+    });
+  }
+
+}
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+Method-1,
+ngOnInit() {
+    this._employeeService.getEmployees().subscribe((empList) =>this.employees = empList);
+    //this.employees = this._employeeService.getEmployees();
+    this._route.queryParamMap.subscribe((queryParams) => {
+      if (queryParams.has('searchTerm')) {
+        this.searchTerm = queryParams.get('searchTerm');
+      } else {
+        this.filteredEmployees = this.employees;
+      }
+    });
+  }
+
+------------------------------------------------------------------------------------------------------------
+
+Method-2, 
+
+ ngOnInit() {
+    this._employeeService.getEmployees().subscribe((empList) => {
+      this.employees = empList;
+      this._route.queryParamMap.subscribe(params => {
+        if (params.has('searchTerm')) {
+          this.searchTerm = params.get('searchTerm');
+        } else {
+          this.filteredEmployees = this.employees;
+          console.log(this.employees.length);
+
+
+        }
+      });
+
+    });
+  }
+------------------------------------------------------------------------------------------------------------
+
+
+54. Angular resolve guard |
+Step-1,
+//Create file name under employee folder name it is "employee-list-resolver.service.ts//
+
+Coding:
+
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { EmployeeService } from './employee.service';
+
+@Injectable()
+// Implement the Resolve interface, as we are implementing a route resolve guard
+// Resolve interface supports generics, so specify the type of data that this
+// resolver returns using the generic parameter
+export class EmployeeListResolverService implements Resolve<Employee[]> {
+    // Inject the employeee service as we need it to retrieve employee data
+    constructor(private _employeeService: EmployeeService) {
+    }
+    // Resolve interface contains the following one method for which we need to
+    // provide implementation. This method calls EmployeeService & returns employee data
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Employee[]> {
+        return this._employeeService.getEmployees();
+    }
+}
+------------------------------------------------------------------------------------------------------------
+
+Step -2,
+in "app.module.ts"
+coding,
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './employees/employee.service';
+import { DisplayEmployeeComponent } from './employees/display-employee.component';
+import { CreateEmployeeCanDeactivateGaurdService } from './employees/create-employee-can-deactivate-gaurd.service';
+import { EmployeeDetailsComponent } from './employees/employee-details.component';
+import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
+import { EmployeeListResolverService } from './employees/employee-list-resolver.service';
+
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', 
+  component: ListEmployeesComponent,
+  resolve:{employeeList : EmployeeListResolverService}
+ },
+  { path: 'create',
+   component: CreateEmployeeComponent,
+   canDeactivate : [CreateEmployeeCanDeactivateGaurdService] 
+  },
+  { path: 'employees/:id', component: EmployeeDetailsComponent},
+
+  { path: '', redirectTo: '/list', pathMatch: 'full' },
+   
+];
+
+
+
+@NgModule({
+  declarations: [  
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective,
+    DisplayEmployeeComponent,
+    EmployeeDetailsComponent,
+    EmployeeFilterPipe,
+   ],
+
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes)
+  ],
+
+
+
+  providers: [EmployeeService,
+  CreateEmployeeCanDeactivateGaurdService,
+  EmployeeListResolverService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+------------------------------------------------------------------------------------------------------------
+ 
+
+Step-3,
+in "list-employee.component.ts",
+
+import { Component, OnInit } from '@angular/core';
+//import Employee model
+import { Employee } from '../models/employee.model';
+//import EmployeeService
+import { ActivatedRoute, Router } from '@angular/router'
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  searchTerm: string;
+
+  //Hard Code the employee data. In a later video we will discuss how to retrieve this employee data
+  //from a data base table
+  employees: Employee[];
+  filteredEmployees: Employee[];
+
+  constructor(
+    private _router: Router,
+    private _route: ActivatedRoute) {
+
+    this.employees = this._route.snapshot.data['employeeList'];
+
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+  }
+
+  ngOnInit() {
+  }
+
+
+
+  onClick(employeeId: number) {
+    this._router.navigate(['/employees', employeeId], {
+      queryParams: { 'searchTerm': this.searchTerm, 'testParam': 'testValue' }
+    });
+  }
+
+}
+------------------------------------------------------------------------------------------------------------
+
+
+55. Angular router navigation events |
+Coding,
+in "app.module.ts"
+
+  imports: [
+    BrowserModule,FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes,{ enableTracing: true })
+  ],
+
+------------------------------------------------------------------------------------------------------------
+
+
+56. Angular route loading indicator|
+Step-1,
+in"app.component.ts"
+coding,
+import { Component } from '@angular/core';
+import {
+  Router, NavigationStart, NavigationEnd,
+  NavigationCancel, NavigationError, Event
+} from '@angular/router';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  title = 'app';
+  // We will use this property to show or hide
+  // the loading indicator
+  showLoadingIndicator = true;
+
+  // Inject the Angular Router
+  constructor(private _router: Router) {
+    // Subscribe to the router events observable
+    this._router.events.subscribe((routerEvent: Event) => {
+
+      // On NavigationStart, set showLoadingIndicator to ture
+      if (routerEvent instanceof NavigationStart) {
+        this.showLoadingIndicator = true;
+      }
+
+      // On NavigationEnd or NavigationError or NavigationCancel
+      // set showLoadingIndicator to false
+      if (routerEvent instanceof NavigationEnd ||
+        routerEvent instanceof NavigationError ||
+        routerEvent instanceof NavigationCancel) {
+        this.showLoadingIndicator = false;
+      }
+
+    });
+  }
+}
+-----------------------------------------------------------------------------------------------------------
+Step-2,
+in "app.component.html",
+coding,
+<div class="container" >
+  <nav class="navbar navbar-default">
+
+    <ul class="nav navbar-nav">
+      
+    <li>
+      <a  routerLink ="list"> List</a>
+       
+    </li>
+      
+      <li>
+        <a  routerLink ="create"> Create</a>
+
+    </li>
+
+
+    <li> 
+      <a  [routerLink] ="['employees',2]">
+         Get Employee With Id 2 
+      </a>
+       
+  </li>
+
+    <li>
+      
+      <a href="https://www.pragimtech.com/"> Pragim Tech</a>
+
+  </li>
+  <li>
+      
+    <a href="https://www.google.com/"> Google </a>
+
+</li>
+
+
+    </ul>
+
+  </nav>
+
+  
+<router-outlet></router-outlet>
+  <!-- Bind to showLoadingIndicator property in the component class -->
+    <div *ngIf="showLoadingIndicator" class="spinner"></div>
+</div>
+
+-----------------------------------------------------------------------------------------------------------
+
+Step-3,
+in "app.component.css",
+coding,”
+
+.spinner {
+    border: 16px solid silver;
+    border-top: 16px solid #337AB7;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 700ms linear infinite;
+    top:50%;
+    left:50%;
+    position: absolute;
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg) }
+    100% { transform: rotate(360deg) }
+  }
+  /* The following website has different loading spinners. https://loading.io/css/*/,
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+57. Angular canactivate guard example |
+Step-1,
+Create "ng g c pageNotFound --flat" in command prompt.
+--------------------------------------------------------------------------------------------
+
+Step-2, 
+in "Page-not-found.component.html" ,
+coding,
+<h1>The resource your are looking for cannot be found </h1>
+--------------------------------------------------------------------------------------------
+
+Step-3,
+in "Page-not-found.component.css" ,
+h1{
+    color: red;
+}     
+
+--------------------------------------------------------------------------------------------
+Step-4,
+in "app.module.ts",
+
+const appRoutes: Routes = [
+  {
+    path: 'list',
+    component: ListEmployeesComponent,
+    resolve: { employeeList: EmployeeListResolverService }
+  },
+  {
+    path: 'create',
+    component: CreateEmployeeComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGaurdService]
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeeDetailsGuardService]
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' },
+
+  { path: 'notfound', component: PageNotFoundComponent },
+
+];
+--------------------------------------------------------------------------------------------
+
+
+
+Step-5,
+Create file name "employee-details-guard.service.ts" under "employee"
+folder.
+coding,
+
+import {
+    CanActivate, Router,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot
+} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { EmployeeService } from './employee.service';
+
+@Injectable()
+// Make the class implement CanActivate interface as
+// we are implementing CanActivate guard service
+export class EmployeeDetailsGuardService implements CanActivate {
+    constructor(private _employeeService: EmployeeService,
+        private _router: Router) { }
+
+    // Provide implementation for canActivate() method of CanActivate interface
+    // Return true if navigation is allowed, otherwise false
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+        const employeeExists = !!this._employeeService.getEmployee(+route.paramMap.get('id'));
+
+        if (employeeExists) {
+            return true;
+        } else {
+            this._router.navigate(['/notfound']);
+            return false;
+        }
+    }
+}
+--------------------------------------------------------------------------------------------
+Step-6,
+in"app.module.ts",
+Coding,
+  providers: [EmployeeService,
+    CreateEmployeeCanDeactivateGaurdService,
+    EmployeeListResolverService,
+    EmployeeDetailsGuardService],
+--------------------------------------------------------------------------------------------
+Step-7,
+const appRoutes: Routes = [
+  {
+    path: 'list',
+    component: ListEmployeesComponent,
+    resolve: { employeeList: EmployeeListResolverService }
+  },
+  {
+    path: 'create',
+    component: CreateEmployeeComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGaurdService]
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeeDetailsGuardService]
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' },
+
+  { path: 'notfound', component: PageNotFoundComponent },
+
+];
+------------------------------------------------------------------------------------------------------------
+
+58. Passing data between components in angular |
+Step-1,
+in "list-employees.component.html"
+Coding,
+
+<div class="form-group">
+    <input type="text" class="form-control" placeholder="Search By Name" [(ngModel)]="searchTerm" />
+</div>
+
+
+<div *ngFor="let employee of filteredEmployees">
+    <app-display-employee [employee]="employee" [searchTerm]="searchTerm">
+    </app-display-employee>
+</div>
+
+-------------------------------------------------------------------
+Step-2,
+in "list-employees.component.ts"
+Coding,
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  employees: Employee[];
+  filteredEmployees: Employee[];
+
+  private _searchTerm: string;
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+  set searchTerm(value: string) {
+    this._searchTerm = value;
+    this.filteredEmployees = this.filtereEmployees(value);
+  }
+
+  filtereEmployees(searchString: string) {
+    return this.employees.filter(employee =>
+      employee.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+  }
+
+  constructor(private _route: ActivatedRoute) {
+
+    this.employees = this._route.snapshot.data['employeeList'];
+
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+
+  }
+
+  ngOnInit() {
+  }
+}
+----------------------------------------------------------------------
+
+Step:3,
+in "display-employee.component.html"
+after finish </body> tag
+<div class="panel-footer">
+  <button class="btn btn-primary" (click)="viewEmployee()">View</button>
+  <button class="btn btn-primary">Edit</button>
+  <button class="btn btn-danger">Delete</button>
+</div>
+
+-----------------------------------------------------------------------
+Step:4,
+in "display-employee.component.css",
+Coding,
+button.btn {
+    width: 70px;
+}
+
+----------------------------------------------------------------------
+
+Step:5,
+in "diplay-employee.component.ts",
+import { Component, OnInit, Input } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+  @Input() employee: Employee;
+  @Input() searchTerm: string;
+
+  private selectedEmployeeId: number;
+
+  constructor(private _route: ActivatedRoute, private _router: Router) { }
+
+  ngOnInit() {
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+  viewEmployee() {
+    this._router.navigate(['/employees', this.employee.id], {
+      queryParams: { 'searchTerm': this.searchTerm }
+    });
+  }
+}
+-----------------------------------------------------------------------------------------------------------
+
+
+
+
+58. Passing data between components in angular |
+Step-1,
+in "list-employees.component.html"
+Coding,
+
+<div class="form-group">
+    <input type="text" class="form-control" placeholder="Search By Name" [(ngModel)]="searchTerm" />
+</div>
+
+
+<div *ngFor="let employee of filteredEmployees">
+    <app-display-employee [employee]="employee" [searchTerm]="searchTerm">
+    </app-display-employee>
+</div>
+
+-----------------------------------------------------------------------------------------------------------
+Step-2,
+in "list-employees.component.ts"
+Coding,
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  employees: Employee[];
+  filteredEmployees: Employee[];
+
+  private _searchTerm: string;
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+  set searchTerm(value: string) {
+    this._searchTerm = value;
+    this.filteredEmployees = this.filtereEmployees(value);
+  }
+
+  filtereEmployees(searchString: string) {
+    return this.employees.filter(employee =>
+      employee.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+  }
+
+  constructor(private _route: ActivatedRoute) {
+
+    this.employees = this._route.snapshot.data['employeeList'];
+
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+
+  }
+
+  ngOnInit() {
+  }
+}
+-----------------------------------------------------------------------------------------------------------
+
+Step:3,
+in "display-employee.component.html"
+after finish </body> tag
+<div class="panel-footer">
+  <button class="btn btn-primary" (click)="viewEmployee()">View</button>
+  <button class="btn btn-primary">Edit</button>
+  <button class="btn btn-danger">Delete</button>
+</div>
+
+-----------------------------------------------------------------------------------------------------------
+Step:4,
+in "display-employee.component.css",
+Coding,
+button.btn {
+    width: 70px;
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+Step:5,
+in "diplay-employee.component.ts",
+import { Component, OnInit, Input } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+  @Input() employee: Employee;
+  @Input() searchTerm: string;
+
+  private selectedEmployeeId: number;
+
+  constructor(private _route: ActivatedRoute, private _router: Router) { }
+
+  ngOnInit() {
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+  viewEmployee() {
+    this._router.navigate(['/employees', this.employee.id], {
+      queryParams: { 'searchTerm': this.searchTerm }
+    });
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+
+Step:6,
+in "employee-details.component.html",
+Coding:
+
+<a class="btn btn-primary" [routerLink]="['/list',{id:employee.id}]"
+  queryParamsHandling="preserve">
+    Back to List
+  </a>
+
+-----------------------------------------------------------------------------------------------------------
+
+Step:6,
+in "employee-details.component.html",
+Coding:
+
+<a class="btn btn-primary" [routerLink]="['/list',{id:employee.id}]"
+  queryParamsHandling="preserve">
+    Back to List
+  </a>
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+59. Edit form in angular |
+
+Note: 
+Existing Route
+
+{
+  path: 'create',
+  component: CreateEmployeeComponent,
+  canDeactivate: [CreateEmployeeCanDeactivateGuardService]
+}
+
+Updated Route to support both creating a new employee and editing an existing employee. If the id route parameter value is 0, then the form will be used to create a new employee. If the id value is not 0, then the form will be used to edit an existing employee.
+
+{
+  path: 'edit/:id',
+  component: CreateEmployeeComponent,
+  canDeactivate: [CreateEmployeeCanDeactivateGuardService]
+}
+-----------------------------------------------
+
+Step-1, "app.module.ts"
+coding,
+ {
+    path: 'edit/:id',
+    component: CreateEmployeeComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGaurdService]
+  },
+
+-----------------------------------------------------
+Step-2,"create-employee-component.html"
+<form ngNativeValidate action="" #employeeForm="ngForm" (ngSubmit)="saveEmployee()">
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title"> {{panelTitle}}</h3>
+  </div>
+
+
+  <div class="panel-body"><!--BodyOpen-->
+    
+
+    <!----Name-->
+    <div class="form-group" [class.has-error]="name.invalid && name.touched" >
+      <label for="name" class="control-label"> Full Name</label>
+      <input required type="text" id="name" class="form-control" name="name"
+        [(ngModel)]="employee.name" #name="ngModel">
+        <span class="help-block" *ngIf="name.invalid && name.touched">
+          Full Name is required
+        </span>
+  </div>
+
+
+<!---contact Reference--->
+
+<div class="form-group" [class.has-error] = "contactPreference.invalid && contactPreference.touched" >
+  <label for="" class="control-label"> Contact Preference </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel" 
+      value="Phone" [(ngModel)]="employee.contactPreference" >
+      Phone
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="contactPreference" required #contactPreference="ngModel"
+       value="Mail"  [(ngModel)]="employee.contactPreference"  >
+      Email
+    </label>
+  </div>
+
+  <span class="help-block" *ngIf="contactPreference.errors?.required && contactPreference.touched" >
+    Contact Preference is Required</span>
+</div>
+<!------------------------------------------------------->
+
+   <!----Email-->
+
+   <div class="form-group" [class.has-error]="email.invalid " >
+    <label for="email" class="control-label"> E Mail</label>
+    <input [required]="contactPreference.value=='Mail'"
+    type="text" id="email" class="form-control" name="email"
+      [(ngModel)]="employee.email" #email="ngModel"
+      pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
+      
+      <span class="help-block" *ngIf="email.errors?.required">
+        Email is required
+      </span>
+
+      <span class="help-block" *ngIf="email.errors?.pattern">
+        Email is Invalid
+      </span>
+</div>
+
+ 
+
+<!----Phone Number-->
+<div class="form-group" [class.has-error]="phoneNumber.invalid">
+  <label for="phoneNumber" class="control-label">Phone Number</label>
+  <input id="phoneNumber" [required]="contactPreference.value=='Phone'"
+          #phoneNumber="ngModel" class="form-control" type="text"
+          pattern="^((\\+91-?)|0)?[0-9]{10}$"
+          name="phoneNumber" [(ngModel)]="employee.phoneNumber">
+          
+          <span class="help-block" *ngIf="phoneNumber.errors?.required">
+            10 Digit Valid Number Required
+          </span>
+      
+          <span class="help-block" *ngIf="phoneNumber.errors?.pattern">
+            Phone Number is  Invalid
+          </span>
+</div>
+
+
+
+<!---Gender Reference--->
+
+
+<div class="form-group" [class.has-error] = "gender.invalid && gender.touched" >
+  <label for="" class="control-label"> Gender </label>
+  <div class="form-control">
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" required #gender="ngModel" value="Male" [(ngModel)]="employee.gender" >
+      Male
+    </label>
+
+    <label for="" class="radio-inline" >
+      <input type="radio" name="gender" required #gender="ngModel" value="Female"  [(ngModel)]="employee.gender"  >
+      Female
+    </label>
+  </div>
+
+  <span class="help-block" *ngIf="gender.errors?.required && gender.touched" >
+     Gender is Required</span>
+</div>
+
+
+<!------------------------------------------------------->
+<!----  Is Active Program-->
+<div class="form-group" [class.has-error]="isActive.invalid" >
+  <div class="form-control">
+<label for="" class="checkbox-inline control-label"> 
+  <input [required]="employee.isActive==null" type="checkbox" name="isActive" [(ngModel)]="employee.isActive"
+   #isActive="ngModel"  >
+    Is Active</label>
+  </div>
+
+  <span class="help-block" *ngIf="isActive.errors?.required" >
+    Is Active is Required
+  </span>
+</div>
+
+<!--------------------Department------------------->
+
+<div class="form-group"
+     [class.has-error]="department.touched && department.errors?.defaultSelected">
+  <label for="department" class="control-label">Department</label>
+  <select id="department" #department="ngModel" name="department"
+          [(ngModel)]="employee.department" appSelectValidator="select"
+          class="form-control">
+    <option value="select">Select Department</option>
+    <option *ngFor="let dept of departments" [value]="dept.id">
+      {{dept.name}}
+    </option>
+  </select>
+  <span class="help-block"
+        *ngIf="department.touched && department.errors?.defaultSelected">
+    Department is required
+  </span>
+</div>
+
+
+
+
+
+<!--------------------------------------->
+
+<!-------PassWord-->
+<div ngModelGroup="passwordGroup" #passwordGroup="ngModelGroup"
+      appConfirmEqualValidator [class.has-error]="passwordGroup.errors?.notEqual
+      && !confirmPassword.errors?.required">
+
+  <div class="form-group"
+        [class.has-error]="password.touched && password.invalid">
+    <label for="password" class="control-label">Password</label>
+    <input name="password" required type="text" class="form-control"
+            [(ngModel)]="employee.password" #password="ngModel">
+    <span class="help-block"
+          *ngIf="password.touched && password.errors?.required">
+      Password is required
+    </span>
+  </div>
+
+  <div class="form-group"
+        [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
+    <label for="confirmPassword" class="control-label">Confirm Password</label>
+    <input name="confirmPassword" required type="text" class="form-control"
+            [(ngModel)]="employee.confirmPassword" #confirmPassword="ngModel">
+    <span class="help-block"
+          *ngIf="confirmPassword.touched && confirmPassword.errors?.required">
+      Confirm Password is required
+    </span>
+    <span class="help-block" *ngIf="confirmPassword.touched &&
+          passwordGroup.errors?.notEqual && !confirmPassword.errors?.required">
+      Password and Confirm Password does not match
+    </span>
+  </div>
+
+</div>
+<!----PassWord End--->
+
+
+
+
+<div class="form-group">
+  <label for="dateOfBirth"> Date Of Birth</label>
+  <input type="text"  bsDatepicker  [bsConfig]="datePickerConfig" id="dateOfBirth" class="form-control"
+   name="dateOfBirth"  [(ngModel)]="employee.dateOfBirth">
+</div>
+
+
+
+
+<div class="form-group">
+  <label for="photoPath"> Photo Path</label>
+  <input type="text"  id="photoPath" class="form-control"
+   name="photoPath"  [(ngModel)]="employee.photoPath"  >
+</div>
+
+<div class="form-group">
+      <button (click)="togglePhotoPreview()"   class="btn btn-primary"
+      *ngIf="employee.photoPath !=='' && employee.photoPath !==null">
+       {{ previewPhoto? "Hide" : "Show"}}  Preview </button>
+</div>
+
+<div class="form-group">
+ <img [src]="photoPath" height="200" width="200" alt=""
+  *ngIf="previewPhoto && employee.photoPath !=='' && employee.photoPath !==null" >
+</div>
+
+
+  </div><!--BodyClose--->
+
+
+
+
+
+  <div class="panel-footer">
+     <button class="btn btn-primary" type="submit" 
+      [disabled]="employeeForm.invalid" > Save</button>
+  </div>
+
+</div>
+
+</form>
+Angular Generated Forom Model : {{employeeForm.value | json}}
+<br>
+<br>
+
+Our Employee Model: {{ employee | json }}
+------------------------------------------------------------------------------------------------------------
+
+Step-3.
+"create-employee.component.ts"
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+employee : Employee;
+previewPhoto = false;
+panelTitle:string;
+
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router,
+    private _route : ActivatedRoute) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(parameterMap => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
+  }
+
+
+
+  private getEmployee(id: number) {
+    // If the id is 0, we want to create a new employee. So we intialise the employee 
+    // property with an Employee object with all properties set to null. The template 
+    // is bound to this employee property so all the form fields are displayed blank, 
+    // to enter details of a new employee we want to create
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name:null,
+        gender:null,
+        email:null,
+        phoneNumber:null,
+        contactPreference : null,
+        dateOfBirth: null,
+        department : 'select',
+        isActive: null,
+        photoPath:null,
+    
+    };
+    
+      // Resetting the form, resets any previous validation errors
+      this.createEmployeeForm.reset();
+      this.panelTitle = 'Create Employee';
+    } else {
+      // If the Id is not 0, then retrieve the respective employee using the employee 
+      // service. Copy the values into a new object and assign that object as the value 
+      // for the employee property. Otherwise the employee property holds a reference 
+      // to the employee object in the array in the EmployeeService. This means any 
+      // changes we make on the form are automatically saved, without we explicitly
+      // saving by clicking the Save button.
+      this.employee = Object.assign({}, this._employeeService.getEmployee(id));
+      this.panelTitle = 'Edit Employee';
+    }
+  }
+
+
+  saveEmployee(): void{
+    const newEmployee: Employee = Object.assign({},this.employee);
+    this._employeeService.save(newEmployee);
+    this.createEmployeeForm.reset( );
+    this._router.navigate(['list']);
+
+  }
+
+
+
+
+
+
+
+}
+
+------------------------------------------------------------------------------------------------------------
+Step-4,
+"employee.service.ts"
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+
+@Injectable()
+
+export class EmployeeService {
+private listEmployees: Employee[] = [
+  
+  {
+    id:1,
+      name:'Mark',
+      gender:'Male',
+      
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '1', 
+      isActive: true,
+      photoPath:'assets/images/mark.jpeg',
+  },
+  
+  {
+    id:2,
+      name:'Mary',
+      gender:'Female',
+      email:'mary@gmail.com',
+      
+      contactPreference :'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '2',
+      isActive: true,
+      photoPath:'assets/images/mary.jpeg',
+  },
+  
+  
+  {
+    id:3,
+      name:'John',
+      gender:'Male',
+      email:'john@gmail.com',
+      
+      contactPreference :'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department :'3' ,
+      isActive: true,
+      photoPath:'assets/images/john.jpeg',
+  },
+  
+  
+  {
+    id:4,
+      name:'Nancy',
+      gender:'Female', 
+      
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '4',
+      isActive: true,
+      photoPath:'assets/images/nancy.jpeg',
+  }, 
+  
+  ];
+
+getEmployee(id: number): Employee {
+return this.listEmployees.find(e => e.id === id);
+}
+
+//save(employee: Employee) {
+//this.listEmployees.push(employee);
+//}
+
+
+getEmployees(): Observable<Employee[]>   {
+//return Observable.of(this.listEmployees);
+return of(this.listEmployees).pipe(delay(2000));
+}
+
+save(employee: Employee) {
+  if (employee.id === null) {
+    // reduce() method reduces the array to a single value. This method executes
+    // the provided function for each element of the array (from left-to-right)
+    // When we implement the server side service to save data to the database
+    // table, we do not have to compute the id, as the server will assing it
+    const maxId = this.listEmployees.reduce(function (e1, e2) {
+      return (e1.id > e2.id) ? e1 : e2;
+    }).id;
+    employee.id = maxId + 1;
+
+    this.listEmployees.push(employee);
+  } else {
+    const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+    this.listEmployees[foundIndex] = employee;
+  }
+}
+
+
+
+
+
+
+
+
+}
+------------------------------------------------------------------------------------------------------------
+
+Few steps below,
+Changes in display-employee.component.html : Bind editEmployee() method to the click event of the "Edit" button
+
+<button class="btn btn-primary" (click)="editEmployee()">Edit</button>
+
+Changes in display-employee.component.ts : Include the following editEmployee() method
+
+editEmployee() {
+  this._router.navigate(['/edit', this.employee.id]);
+}
+
+Changes in app.component.html : Change the "Create" menu item to point to our new route "edit/0".
+
+<li>
+    <a routerLink="edit/0">Create</a>
+</li>
+------------------------------------------------------------------------------------------------------------
+ 
+
+
+60. Angular delete form |
+Step-1,
+  Change in "employee.service.ts"
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators';
+
+
+@Injectable()
+
+export class EmployeeService {
+private listEmployees: Employee[] = [
+  
+  {
+    id:1,
+      name:'Mark',
+      gender:'Male',
+      
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '1', 
+      isActive: true,
+      photoPath:'assets/images/mark.jpeg',
+  },
+  
+  {
+    id:2,
+      name:'Mary',
+      gender:'Female',
+      email:'mary@gmail.com',
+      
+      contactPreference :'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '2',
+      isActive: true,
+      photoPath:'assets/images/mary.jpeg',
+  },
+  
+  
+  {
+    id:3,
+      name:'John',
+      gender:'Male',
+      email:'john@gmail.com',
+      
+      contactPreference :'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department :'3' ,
+      isActive: true,
+      photoPath:'assets/images/john.jpeg',
+  },
+  
+  
+  {
+    id:4,
+      name:'Nancy',
+      gender:'Female', 
+      
+      phoneNumber:9092380057,
+      contactPreference :'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department : '4',
+      isActive: true,
+      photoPath:'assets/images/nancy.jpeg',
+  }, 
+  
+  ];
+
+getEmployee(id: number): Employee {
+return this.listEmployees.find(e => e.id === id);
+}
+
+//save(employee: Employee) {
+//this.listEmployees.push(employee);
+//}
+
+
+getEmployees(): Observable<Employee[]>   {
+//return Observable.of(this.listEmployees);
+return of(this.listEmployees).pipe(delay(2000));
+}
+
+save(employee: Employee) {
+  if (employee.id === null) {
+    // reduce() method reduces the array to a single value. This method executes
+    // the provided function for each element of the array (from left-to-right)
+    // When we implement the server side service to save data to the database
+    // table, we do not have to compute the id, as the server will assing it
+    const maxId = this.listEmployees.reduce(function (e1, e2) {
+      return (e1.id > e2.id) ? e1 : e2;
+    }).id;
+    employee.id = maxId + 1;
+
+    this.listEmployees.push(employee);
+  } else {
+    const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+    this.listEmployees[foundIndex] = employee;
+  }
+}
+
+
+
+deleteEmployee(id: number) {
+  const i = this.listEmployees.findIndex(e => e.id === id);
+  if (i !== -1) {
+    this.listEmployees.splice(i, 1);
+  }
+}
+
+
+
+
+}
+----------------------------------------------------------------------------------------------------
+Step-2,
+change in "display-employees-components.ts"
+
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+  @Input() employee: Employee;
+  @Input() searchTerm: string;
+// This output event will be used to notify parent component i.e
+  // ListEmployeesComponent when an employee is deleted. so the 
+  // ListEmployeesComponent can delete that respective employee
+  // from the filteredEmployees array to which the template is bound
+  @Output() notifyDelete: EventEmitter<number> = new EventEmitter<number>();
+  // This property is used in the view template to show and hide
+  // delete confirmation
+  confirmDelete = false;
+
+  private selectedEmployeeId: number;
+
+
+
+
+
+  
+
+  constructor(private _route: ActivatedRoute,
+     private _router: Router,
+     private _employeeService: EmployeeService) { }
+
+  ngOnInit() {
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+  viewEmployee() {
+    this._router.navigate(['/employees', this.employee.id], {
+      queryParams: { 'searchTerm': this.searchTerm }
+    });
+  }
+
+
+  editEmployee()
+  {
+    this._router.navigate(['/edit', this.employee.id]);
+  }
+ // Call the EmployeeService delete method and raise notifyDelete event, so 
+  // the ListEemployeesComponent can delete the same employee from it's 
+  // filtered list array
+  deleteEmployee() {
+    this._employeeService.deleteEmployee(this.employee.id);
+    this.notifyDelete.emit(this.employee.id);
+  }
+
+
+
+
+} 
+
+----------------------------------------------------------------------------------------------------
+Step-3,
+Change in "display-employee.component.html"
+  <span *ngIf="confirmDelete">
+    <span>Are you sure you want to delete ?</span>
+    <button class="btn btn-danger" (click)="deleteEmployee()">Yes</button>
+    <button class="btn btn-primary" (click)="confirmDelete=false">No</button>
+</span>
+<span *ngIf="!confirmDelete">
+    <button class="btn btn-danger" (click)="confirmDelete=true">Delete</button>
+</span>
+
+-----------------------------------------------------------------------------------------------------
+
+Step-4,
+changes "list-employees.component.html"
+bind to the child component notifyDelelte event.
+
+<div class="form-group">
+    <input type="text" class="form-control" placeholder="Search By Name" [(ngModel)]="searchTerm" />
+</div>
+
+
+<div *ngFor="let employee of filteredEmployees">
+    <app-display-employee [employee]="employee" [searchTerm]="searchTerm"
+    (notifyDelete)="onDeleteNotification($event)">
+    </app-display-employee>
+</div>
+-----------------------------------------------------------------------------------------------------
+
+
+Step-5,
+Changes in "list-employee.component.ts"
+import { Component, OnInit } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  employees: Employee[];
+  filteredEmployees: Employee[];
+
+  private _searchTerm: string;
+  get searchTerm(): string {
+    return this._searchTerm;
+  }
+  set searchTerm(value: string) {
+    this._searchTerm = value;
+    this.filteredEmployees = this.filtereEmployees(value);
+  }
+
+  filtereEmployees(searchString: string) {
+    return this.employees.filter(employee =>
+      employee.name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1);
+  }
+
+  constructor(private _route: ActivatedRoute) {
+
+    this.employees = this._route.snapshot.data['employeeList'];
+
+    if (this._route.snapshot.queryParamMap.has('searchTerm')) {
+      this.searchTerm = this._route.snapshot.queryParamMap.get('searchTerm');
+    } else {
+      this.filteredEmployees = this.employees;
+    }
+
+  }
+
+  onDeleteNotification(id: number) {
+    const i = this.filteredEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.filteredEmployees.splice(i, 1);
+    }
+  }
+
+  ngOnInit() {
+  }
+}
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+61. Angular accordion example |
+Changes in display-employee.component.ts
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+  private selectedEmployeeId: number;
+  @Input() employee: Employee;
+  @Input() searchTerm: string;
+// This output event will be used to notify parent component i.e
+  // ListEmployeesComponent when an employee is deleted. so the 
+  // ListEmployeesComponent can delete that respective employee
+  // from the filteredEmployees array to which the template is bound
+  @Output() notifyDelete: EventEmitter<number> = new EventEmitter<number>();
+  // This property is used in the view template to show and hide
+  // delete confirmation
+  confirmDelete = false;
+  //panelExpanded = true;
+  isHidden = false;
+------------------------------------------------------------------------------------------------------------
+Changes in display-employee.component.css
+.pointerCursor {
+    cursor: pointer;
+}
+------------------------------------------------------------------------------------------------------------
+Changes in display-employee.component.ts
+
+ <div class="panel panel-primary" [class.panel-success]="selectedEmployeeId  === employee.id" >
+<div class="panel-heading  pointerCursor" (click)="isHidden = !isHidden">
+  <h3 class="panel-title" > {{employee.name | uppercase}} </h3>
+</div>
+<div class="panel-body" [hidden]="isHidden">
+<div class="col-xs-10">
+  
+  <div class="row vertical-align">
+    <div class="col-xs-4">
+      <img class="imageClass" [src]="employee.photoPath" alt="">
+    </div>
+<div class="col-xs-8">
+
+
+<div class="row">
+<div class="col-xs-6">
+Gender
+</div>
+<div class="col-xs-6">
+:{{employee.gender}}
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col-xs-6">
+Date Of Birth
+</div>
+<div class="col-xs-6">
+ :{{employee.dateOfBirth| date:'dd/MM/y'}}
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-6">
+  Contact Preference
+  </div>
+  <div class="col-xs-6">
+    :{{employee.contactPreference}}
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-xs-6">
+    Phone
+    </div>
+    <div class="col-xs-6">
+      :{{employee.phoneNumber}}
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-xs-6">
+      Email
+      </div>
+      <div class="col-xs-6">
+       :{{employee.email}}
+        </div>
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-xs-6">
+        Department
+        </div>
+        <div class="col-xs-6" [ngSwitch]="employee.department" >
+         :
+         <span *ngSwitchCase="1" > Help Desk</span>
+         <span *ngSwitchCase="2" > HR</span>
+         <span *ngSwitchCase="3" > IT</span>
+         <span *ngSwitchCase="4" > Payroll</span>
+         <span *ngSwitchDefault > Help Desk</span>
+          </div>
+        </div>
+
+
+
+        
+    <div class="row">
+      <div class="col-xs-6">
+      Is Active
+      </div>
+      <div class="col-xs-6">
+       : {{employee.isActive}}
+        </div>
+      </div>
+
+
+</div>
+  </div>
+
+</div>
+
+</div>
+
+<div class="panel-footer" [hidden]="isHidden">
+  <button class="btn btn-primary" (click)="viewEmployee()">View</button>
+  <button class="btn btn-primary" (click)="editEmployee()">Edit</button>
+  <span *ngIf="confirmDelete">
+    <span>Are you sure you want to delete ?</span>
+    <button class="btn btn-danger" (click)="deleteEmployee()">Yes</button>
+    <button class="btn btn-primary" (click)="confirmDelete=false">No</button>
+</span>
+<span *ngIf="!confirmDelete">
+    <button class="btn btn-danger" (click)="confirmDelete=true">Delete</button>
+</span>
+</div>
+
+</div>
+------------------------------------------------------------------------------------------------------------
+
+
+
+62. Angular content projection 
+"Shared" folder. Use the following Angular CLI command to create the component.
+ng g c shared/accordion --flat
+Coding in "accordion.component.ts"
+import { Component, Input, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrls: ['./accordion.component.css']
+})
+export class AccordionComponent implements OnInit {
+// We use this property to set a different CSS class on the employee
+  // panel if we have just viewed his details
+  @Input() hasJustViewed: boolean;
+  // Sets the panel title, in our case the name of the employee
+  @Input() title: string;
+  // Controls hiding and showing panel body and footer
+  @Input() isHidden = false;
+
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+------------------------------------------
+"accordion.component.css :"
+.pointerCursor {
+    cursor: pointer;
+}
+------------------------------------------------------------------------------------------------------------
+"
+accordion.component.html "
+<!-- Add panel-success class only if hasJustViewed property is true -->
+<div class="panel panel-primary" [class.panel-success]="hasJustViewed">
+
+ 
+  <!-- pointerCursor class changes the cursor style to pointer when hovered
+
+
+           over the employee panel title. When clicked on the title, isHidden
+           boolean property is toggled from true to false & vice-versa. We use
+           this property to toggle the visibility of panel body & footer -->
+  <div class="panel-heading pointerCursor" (click)="isHidden = !isHidden">
+      <h3 class="panel-title">{{title | uppercase}}</h3>
+  </div>
+  <div class="panel-body" [hidden]="isHidden">
+      <!-- ng-content specifies the slot into which the content will be projected
+             by the component that consumes this accordion component -->
+      <ng-content select=".myPanelBody"></ng-content>
+  </div>
+  <div class="panel-footer" [hidden]="isHidden">
+      <!-- Another slot into which the content can be projected. Since we have more
+             than one slot into which the content can be projected, this is called
+             multi-slot content projection-->
+      <ng-content select=".myPanelFooter"></ng-content>
+  </div>
+</div>
+------------------------------------------------------------------------------------------------------------
+
+"Changes in display-employee.component.html "
+<app-accordion [title]="employee.name"  [isHidden]="false"
+[hasJustViewed]="selectedEmployeeId === employee.id">
+
+<div class="col-xs-10 myPanelBody">
+  
+  <div class="row vertical-align">
+    <div class="col-xs-4">
+      <img class="imageClass" [src]="employee.photoPath" alt="">
+    </div>
+<div class="col-xs-8">
+
+
+<div class="row">
+<div class="col-xs-6">
+Gender
+</div>
+<div class="col-xs-6">
+:{{employee.gender}}
+</div>
+</div>
+
+
+
+<div class="row">
+<div class="col-xs-6">
+Date Of Birth
+</div>
+<div class="col-xs-6">
+ :{{employee.dateOfBirth| date:'dd/MM/y'}}
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-6">
+  Contact Preference
+  </div>
+  <div class="col-xs-6">
+    :{{employee.contactPreference}}
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-xs-6">
+    Phone
+    </div>
+    <div class="col-xs-6">
+      :{{employee.phoneNumber}}
+      </div>
+    </div>
+
+
+
+    <div class="row">
+      <div class="col-xs-6">
+      Email
+      </div>
+      <div class="col-xs-6">
+       :{{employee.email}}
+        </div>
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-xs-6">
+        Department
+        </div>
+        <div class="col-xs-6" [ngSwitch]="employee.department" >
+         :
+         <span *ngSwitchCase="1" > Help Desk</span>
+         <span *ngSwitchCase="2" > HR</span>
+         <span *ngSwitchCase="3" > IT</span>
+         <span *ngSwitchCase="4" > Payroll</span>
+         <span *ngSwitchDefault > Help Desk</span>
+          </div>
+        </div>
+
+
+
+        
+    <div class="row">
+      <div class="col-xs-6">
+      Is Active
+      </div>
+      <div class="col-xs-6">
+       : {{employee.isActive}}
+        </div>
+      </div>
+
+
+</div>
+  </div>
+
+</div>
+<div class="myPanelFooter">
+  <button class="btn btn-primary" (click)="viewEmployee()">View</button>
+  <button class="btn btn-primary" (click)="editEmployee()">Edit</button>
+  <span *ngIf="confirmDelete">
+    <span>Are you sure you want to delete ?</span>
+    <button class="btn btn-danger" (click)="deleteEmployee()">Yes</button>
+    <button class="btn btn-primary" (click)="confirmDelete=false">No</button>
+</span>
+<span *ngIf="!confirmDelete">
+    <button class="btn btn-danger" (click)="confirmDelete=true">Delete</button>
+</span>
+</div>
+
+
+</app-accordion>
+
+------------------------------------------------------------------------------------------------------------
+ 
+
+
+63. Online fake REST API 
+
+Execute the following command to install JSON server
+npm install -g json-server
+
+Execute the following command to start the server
+json-server --watch db.json
+
+This automatically creates db.json  Take date from employee.ts and modify  accordingly. 
+ {
+  "employees": [
+    {
+      "id":1, 
+      "name":"Mark",
+      "gender":"Male",
+      "phoneNumber":9092380057,
+      "contactPreference" :"Phone",
+      "dateOfBirth": "10/12/1988",
+      "department" : "1", 
+      "isActive": true,
+      "photoPath":"assets/images/mark.jpeg"
+  },
+  
+  {
+      "id":2,
+      "name":"Mary",
+      "gender":"Female",
+      "email":"mary@gmail.com",
+      "contactPreference" :"Mail",
+      "dateOfBirth": "10/12/1988",
+      "department" : "2",
+      "isActive": true,
+      "photoPath":"assets/images/mary.jpeg"
+  },
+  
+  
+  {
+      "id":3,
+      "name":"John",
+      "gender":"Male",
+      "email":"john@gmail.com",
+      "contactPreference" :"Mail",
+      "dateOfBirth": "10/12/1988",
+      "department" :"3" ,
+      "isActive": true,
+      "photoPath":"assets/images/john.jpeg"
+  },
+  
+  
+  {
+      "id":4,
+      "name":"Nancy",
+      "gender":"Female", 
+      "phoneNumber":9092380057,
+      "contactPreference" :"Phone",
+      "dateOfBirth": "10/12/1988",
+      "department" : "4",
+      "isActive": true,
+      "photoPath" :"assets/images/nancy.jpeg"
+  }
+  
+  ]
+  
+}
+------------------------------------------------------------------------------------------------------------
+
+At this point, fire up the browser and navigate to http://localhost:3000/employees/ to see the list of all employees.
+------------------------------------------------------------------------------------------------------------
+64. Angular client server architecture | Theory only
+
+
+65. Angular HttpClient get example |
+Step 1 : Import Angular HttpClientModule : root module AppModule (app.module.ts)
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { SelectRequiredValidatorDirective } from './shared/select-required-validator.directive';
+import { HttpClientModule } from '@angular/common/http';
+
+
+
+
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ListEmployeesComponent } from './employees/list-employees.component';
+import { CreateEmployeeComponent } from './employees/create-employee.component';
+import { ConfirmEqualValidatorDirective } from './shared/confirm-equal-validator.directive';
+import { EmployeeService } from './employees/employee.service';
+import { DisplayEmployeeComponent } from './employees/display-employee.component';
+import { CreateEmployeeCanDeactivateGaurdService } from './employees/create-employee-can-deactivate-gaurd.service';
+import { EmployeeDetailsComponent } from './employees/employee-details.component';
+import { EmployeeFilterPipe } from './employees/employee-filter.pipe';
+import { EmployeeListResolverService } from './employees/employee-list-resolver.service';
+import { PageNotFoundComponent } from './page-not-found.component';
+import { EmployeeDetailsGuardService } from './employees/employee-details-guard.service';
+import { AccordionComponent } from './shared/accordion.component';
+
+
+
+
+const appRoutes: Routes = [
+  {
+    path: 'list',
+    component: ListEmployeesComponent,
+    resolve: { employeeList: EmployeeListResolverService }
+  },
+
+
+  
+  {
+    path: 'edit/:id',
+    component: CreateEmployeeComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGaurdService]
+  },
+  {
+    path: 'employees/:id',
+    component: EmployeeDetailsComponent,
+    canActivate: [EmployeeDetailsGuardService]
+  },
+  { path: '', redirectTo: '/list', pathMatch: 'full' },
+
+  { path: 'notfound', component: PageNotFoundComponent },
+
+];
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    ListEmployeesComponent,
+    CreateEmployeeComponent,
+    SelectRequiredValidatorDirective,
+    ConfirmEqualValidatorDirective,
+    DisplayEmployeeComponent,
+    EmployeeDetailsComponent,
+    EmployeeFilterPipe,
+    PageNotFoundComponent,
+    AccordionComponent,
+  ],
+
+
+
+
+
+
+
+  imports: [
+    BrowserModule, FormsModule,
+    BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
+    AppRoutingModule,
+    RouterModule.forRoot(appRoutes),
+    HttpClientModule
+    //RouterModule.forRoot(appRoutes,{ enableTracing: true })
+  ],
+
+
+
+  providers: [EmployeeService,
+    CreateEmployeeCanDeactivateGaurdService,
+    EmployeeListResolverService,
+    EmployeeDetailsGuardService],
+
+
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+------------------------------------------------------------------------------------------------------------
+
+Step 2 :employee.service.ts
+// Import HttpClient service
+
+
+import { HttpClient } from '@angular/common/http';
+
+// Inject the service using the service class constructor
+@Injectable()
+export class EmployeeService {
+    constructor(private httpClient: HttpClient) {
+    }
+
+    getEmployees(): Observable<Employee[]> {
+        return this.httpClient.get<Employee[]>('http://localhost:3000/employees');
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+ 
+
+"employee.service.ts " coding  uptp Part 65 "
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  getEmployee(id: number): Employee {
+    return this.listEmployees.find(e => e.id === id);
+  }
+
+  //save(employee: Employee) {
+  //this.listEmployees.push(employee);
+  //}
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>('http://localhost:3000/employees');
+
+  }
+
+  
+
+  save(employee: Employee) {
+    if (employee.id === null) {
+      // reduce() method reduces the array to a single value. This method executes
+      // the provided function for each element of the array (from left-to-right)
+      // When we implement the server side service to save data to the database
+      // table, we do not have to compute the id, as the server will assing it
+      const maxId = this.listEmployees.reduce(function (e1, e2) {
+        return (e1.id > e2.id) ? e1 : e2;
+      }).id;
+      employee.id = maxId + 1;
+
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+------------------------------------------------------------------------------------------------------------
+ 
+
+before 66 parts
+---------------------
+
+"employee.service.ts"
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+
+
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  getEmployee(id: number): Employee {
+    return this.listEmployees.find(e => e.id === id);
+  }
+
+  //save(employee: Employee) {
+  //this.listEmployees.push(employee);
+  //}
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>('http://localhost:3000/employees');
+
+  }
+
+  
+
+  save(employee: Employee) {
+    if (employee.id === null) {
+      // reduce() method reduces the array to a single value. This method executes
+      // the provided function for each element of the array (from left-to-right)
+      // When we implement the server side service to save data to the database
+      // table, we do not have to compute the id, as the server will assing it
+      const maxId = this.listEmployees.reduce(function (e1, e2) {
+        return (e1.id > e2.id) ? e1 : e2;
+      }).id;
+      employee.id = maxId + 1;
+
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+
+
+
+
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+------------------------------------------------------------
+ 
+
+66. Angular HttpClient error handling | Working without error|
+Method -1,"employee.service.ts"
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  getEmployee(id: number): Employee {
+    return this.listEmployees.find(e => e.id === id);
+  }
+
+  //save(employee: Employee) {
+  //this.listEmployees.push(employee);
+  //}
+
+
+getEmployees(): Observable<Employee[]> {
+return   this.httpClient.get<Employee[]>('http://localhost:3000/employees1').pipe(catchError(this.    handleError));
+  }
+
+  
+
+  save(employee: Employee) {
+    if (employee.id === null) {
+      // reduce() method reduces the array to a single value. This method executes
+      // the provided function for each element of the array (from left-to-right)
+      // When we implement the server side service to save data to the database
+      // table, we do not have to compute the id, as the server will assing it
+      const maxId = this.listEmployees.reduce(function (e1, e2) {
+        return (e1.id > e2.id) ? e1 : e2;
+      }).id;
+      employee.id = maxId + 1;
+
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+        console.error('Client Side Error :', errorResponse.error.message);
+    } else {
+        console.error('Server Side Error :', errorResponse);
+    }
+    // return an observable with a meaningful error message to the end user
+    return  throwError('There is a problem with the service.We are notified & working on it. Please try again later.');
+}
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+-----------------------------------------------------------------------------------------------------------
+ 
+
+
+
+
+before Part 67,
+“employee-list-resolver.service.ts”
+import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { EmployeeService } from './employee.service';
+
+@Injectable()
+// Implement the Resolve interface, as we are implementing a route resolve guard
+// Resolve interface supports generics, so specify the type of data that this
+// resolver returns using the generic parameter
+export class EmployeeListResolverService implements Resolve<Employee[]> {
+    // Inject the employeee service as we need it to retrieve employee data
+    constructor(private _employeeService: EmployeeService) {
+    }
+    // Resolve interface contains the following one method for which we need to
+    // provide implementation. This method calls EmployeeService & returns employee data
+    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Employee[]> {
+        return this._employeeService.getEmployees();
+    }
+}
+
+
+
+---------------------------------------------------------------------------------------------------
+
+
+before Part-68,
+"create-employee.component.ts"
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+employee : Employee;
+previewPhoto = false;
+panelTitle:string;
+
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router,
+    private _route : ActivatedRoute) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(parameterMap => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
+  }
+
+
+
+  private getEmployee(id: number) {
+    // If the id is 0, we want to create a new employee. So we intialise the employee 
+    // property with an Employee object with all properties set to null. The template 
+    // is bound to this employee property so all the form fields are displayed blank, 
+    // to enter details of a new employee we want to create
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name:null,
+        gender:null,
+        email:null,
+        phoneNumber:null,
+        contactPreference : null,
+        dateOfBirth: null,
+        department : 'select',
+        isActive: null,
+        photoPath:null,
+    
+    };
+    
+      // Resetting the form, resets any previous validation errors
+      this.createEmployeeForm.reset();
+      this.panelTitle = 'Create Employee';
+    } else {
+      // If the Id is not 0, then retrieve the respective employee using the employee 
+      // service. Copy the values into a new object and assign that object as the value 
+      // for the employee property. Otherwise the employee property holds a reference 
+      // to the employee object in the array in the EmployeeService. This means any 
+      // changes we make on the form are automatically saved, without we explicitly
+      // saving by clicking the Save button.
+      this.employee = Object.assign({}, this._employeeService.getEmployee(id));
+      this.panelTitle = 'Edit Employee';
+    }
+  }
+
+
+  saveEmployee(): void{
+    const newEmployee: Employee = Object.assign({},this.employee);
+    this._employeeService.save(newEmployee);
+    this.createEmployeeForm.reset( );
+    this._router.navigate(['list']);
+
+  }
+
+
+
+
+
+
+
+}
+----------------------------------------------------------------------------------------------
+
+Befor part 68
+"employee.service.ts"
+
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  getEmployee(id: number): Employee {
+    return this.listEmployees.find(e => e.id === id);
+  }
+
+  //save(employee: Employee) {
+  //this.listEmployees.push(employee);
+  //}
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>('http://localhost:3000/employees').pipe(catchError(this.handleError));
+  }
+
+  
+
+  save(employee: Employee) {
+    if (employee.id === null) {
+      // reduce() method reduces the array to a single value. This method executes
+      // the provided function for each element of the array (from left-to-right)
+      // When we implement the server side service to save data to the database
+      // table, we do not have to compute the id, as the server will assing it
+      const maxId = this.listEmployees.reduce(function (e1, e2) {
+        return (e1.id > e2.id) ? e1 : e2;
+      }).id;
+      employee.id = maxId + 1;
+
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+
+
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+        console.error('Client Side Error :', errorResponse.error.message);
+    } else {
+        console.error('Server Side Error :', errorResponse);
+    }
+    // return an observable with a meaningful error message to the end user
+    return  throwError('There is a problem with the service.We are notified & working on it. Please try again later.');
+}
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+------------------------------------------------------------------------------
+
+
+68. Angular httpclient post example | Working Perfectly.
+
+Modify code in "employee.service.ts"
+
+save(employee: Employee): Observable<Employee> {
+  if (employee.id === null) {
+      // const maxId = this.listEmployees.reduce(function (e1, e2) {
+      //     return (e1.id > e2.id) ? e1 : e2;
+      // }).id;
+      // employee.id = maxId + 1;
+      // employee.id = 0;
+
+      // this.listEmployees.push(employee);
+      return this.httpClient.post<Employee>('http://localhost:3000/employees',
+          employee, {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json'
+              })
+          })
+          .pipe(catchError(this.handleError));
+  } else {
+      const foundIndex =
+          this.listEmployees.findIndex(e => e.id === employee.id);
+
+      this.listEmployees[foundIndex] = employee;
+  }
+}
+
+
+
+
+
+But full coing
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  getEmployee(id: number): Employee {
+    return this.listEmployees.find(e => e.id === id);
+  }
+
+  //save(employee: Employee) {
+  //this.listEmployees.push(employee);
+  //}
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>('http://localhost:3000/employees').pipe(catchError(this.handleError));
+  }
+
+  
+/*
+  save(employee: Employee) {
+    if (employee.id === null) {
+      // reduce() method reduces the array to a single value. This method executes
+      // the provided function for each element of the array (from left-to-right)
+      // When we implement the server side service to save data to the database
+      // table, we do not have to compute the id, as the server will assing it
+      const maxId = this.listEmployees.reduce(function (e1, e2) {
+        return (e1.id > e2.id) ? e1 : e2;
+      }).id;
+      employee.id = maxId + 1;
+
+      this.listEmployees.push(employee);
+    } else {
+      const foundIndex = this.listEmployees.findIndex(e => e.id === employee.id);
+      this.listEmployees[foundIndex] = employee;
+    }
+  }
+*/
+
+
+save(employee: Employee): Observable<Employee> {
+  if (employee.id === null) {
+      // const maxId = this.listEmployees.reduce(function (e1, e2) {
+      //     return (e1.id > e2.id) ? e1 : e2;
+      // }).id;
+      // employee.id = maxId + 1;
+      // employee.id = 0;
+
+      // this.listEmployees.push(employee);
+      return this.httpClient.post<Employee>('http://localhost:3000/employees',
+          employee, {
+              headers: new HttpHeaders({
+                  'Content-Type': 'application/json'
+              })
+          })
+          .pipe(catchError(this.handleError));
+  } else {
+      const foundIndex =
+          this.listEmployees.findIndex(e => e.id === employee.id);
+
+      this.listEmployees[foundIndex] = employee;
+  }
+}
+
+
+
+
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+        console.error('Client Side Error :', errorResponse.error.message);
+    } else {
+        console.error('Server Side Error :', errorResponse);
+    }
+    // return an observable with a meaningful error message to the end user
+    return  throwError('There is a problem with the service.We are notified & working on it. Please try again later.');
+}
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+ Modify code in "Create-employee.component.ts"
+
+  saveEmployee(empForm: NgForm): void {
+    this._employeeService.save(this.employee).subscribe(
+      (data: Employee) => {
+        console.log(data);
+        this._router.navigate(['list']);
+        this.createEmployeeForm.reset();
+      },
+      (error: any) => { console.log(error); }
+    );
+  }
+
+
+
+
+
+But full coding;
+
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+employee : Employee;
+previewPhoto = false;
+panelTitle:string;
+
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router,
+    private _route : ActivatedRoute) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(parameterMap => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
+  }
+
+
+
+  private getEmployee(id: number) {
+    // If the id is 0, we want to create a new employee. So we intialise the employee 
+    // property with an Employee object with all properties set to null. The template 
+    // is bound to this employee property so all the form fields are displayed blank, 
+    // to enter details of a new employee we want to create
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name:null,
+        gender:null,
+        email:null,
+        phoneNumber:null,
+        contactPreference : null,
+        dateOfBirth: null,
+        department : 'select',
+        isActive: null,
+        photoPath:null,
+    
+    };
+    
+      // Resetting the form, resets any previous validation errors
+      this.createEmployeeForm.reset();
+      this.panelTitle = 'Create Employee';
+    } else {
+      // If the Id is not 0, then retrieve the respective employee using the employee 
+      // service. Copy the values into a new object and assign that object as the value 
+      // for the employee property. Otherwise the employee property holds a reference 
+      // to the employee object in the array in the EmployeeService. This means any 
+      // changes we make on the form are automatically saved, without we explicitly
+      // saving by clicking the Save button.
+      this.employee = Object.assign({}, this._employeeService.getEmployee(id));
+      this.panelTitle = 'Edit Employee';
+    }
+  }
+
+/*
+  saveEmployee(): void{
+    const newEmployee: Employee = Object.assign({},this.employee);
+    this._employeeService.save(newEmployee);
+    this.createEmployeeForm.reset( );
+    this._router.navigate(['list']);
+
+  }*/
+
+  saveEmployee(empForm: NgForm): void {
+    this._employeeService.save(this.employee).subscribe(
+      (data: Employee) => {
+        console.log(data);
+        this._router.navigate(['list']);
+        this.createEmployeeForm.reset();
+      },
+      (error: any) => { console.log(error); }
+    );
+  }
+
+
+
+
+
+
+
+}
+
+---------------------------------------------------------------------------------------------------------
+
+
+69. Angular httpclient put example | Working Perfectly
+Step:1,
+in "employee.service.ts"
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  private listEmployees: Employee[] = [
+
+    {
+      id: 1,
+      name: 'Mark',
+      gender: 'Male',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '1',
+      isActive: true,
+      photoPath: 'assets/images/mark.jpeg',
+    },
+
+    {
+      id: 2,
+      name: 'Mary',
+      gender: 'Female',
+      email: 'mary@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '2',
+      isActive: true,
+      photoPath: 'assets/images/mary.jpeg',
+    },
+
+
+    {
+      id: 3,
+      name: 'John',
+      gender: 'Male',
+      email: 'john@gmail.com',
+
+      contactPreference: 'Mail',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '3',
+      isActive: true,
+      photoPath: 'assets/images/john.jpeg',
+    },
+
+
+    {
+      id: 4,
+      name: 'Nancy',
+      gender: 'Female',
+
+      phoneNumber: 9092380057,
+      contactPreference: 'Phone',
+      dateOfBirth: new Date('10/12/1988'),
+      department: '4',
+      isActive: true,
+      photoPath: 'assets/images/nancy.jpeg',
+    },
+
+  ];
+
+  baseUrl = 'http://localhost:3000/employees';
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>(this.baseUrl).pipe(catchError(this.handleError));
+  }
+
+
+  
+  getEmployee(id: number): Observable<Employee> {
+    return this.httpClient.get<Employee>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+  addEmployee(employee: Employee): Observable<Employee> {
+
+    return this.httpClient.post<Employee>(this.baseUrl, employee, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+      .pipe(catchError(this.handleError));
+
+  }
+
+
+
+  updateEmployee(employee: Employee): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/${employee.id}`, employee, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+
+
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+      console.error('Client Side Error :', errorResponse.error.message);
+    } else {
+      console.error('Server Side Error :', errorResponse);
+    }
+    // return an observable with a meaningful error message to the end user
+    return throwError('There is a problem with the service.We are notified & working on it. Please try again later.');
+  }
+
+
+  deleteEmployee(id: number) {
+    const i = this.listEmployees.findIndex(e => e.id === id);
+    if (i !== -1) {
+      this.listEmployees.splice(i, 1);
+    }
+  }
+
+
+
+
+}
+------------------------------------------------------------------------------------------------------------
+
+Step-2,
+"employee-details-guard.service.ts"
+
+import {
+    CanActivate, Router,
+    ActivatedRouteSnapshot,
+    RouterStateSnapshot
+} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { EmployeeService } from './employee.service';
+import { Observable } from 'rxjs';
+import { Employee } from '../models/employee.model';
+import { map } from 'rxjs/internal/operators/map';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+// Make the class implement CanActivate interface as
+// we are implementing CanActivate guard service
+export class EmployeeDetailsGuardService implements CanActivate {
+    constructor(private _employeeService: EmployeeService,
+        private _router: Router) { }
+
+    
+    
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean>   {
+       return this._employeeService.getEmployee(+route.paramMap.get('id')).pipe(
+        map(employee =>{
+        
+            const employeeExists = !! employee;
+
+            if (employeeExists) {
+                return true;
+            } else {
+                this._router.navigate(['/notfound']);
+                return false;
+            }
+        })
+
+       /* catchError((err) => {
+            console.log(err);
+            return Observable.of(false);
+        })
+*/
+
+        );
+        
+
+       
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+
+Step-3,
+"create-employee.component.ts "
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
+import { Department } from '../models/department.model';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+@ViewChild('employeeForm')public createEmployeeForm: NgForm;
+employee : Employee;
+previewPhoto = false;
+panelTitle:string;
+
+
+togglePhotoPreview(){
+  this.previewPhoto = ! this.previewPhoto; 
+}
+//Create a Property of type Partial<BsDatepickerConfig>
+datePickerConfig: Partial<BsDatepickerConfig>;
+
+  departments: Department[]=[
+    {id:1, name:'Help Desk'},
+    {id:2, name:'HR'},
+    {id:3, name:'IT'},
+    {id:4, name:'Payroll'},
+
+  ];
+
+//gender = 'male';
+//isActive = true;
+//department= '3'; 
+
+  constructor(private _employeeService:EmployeeService,
+    private _router:Router,
+    private _route : ActivatedRoute) { 
+    this.datePickerConfig = Object.assign({},
+      {
+        containerClass: 'theme-dark-blue',
+        dateInputFormat: 'DD/MM/YYYY',
+        minDate: new Date(2020,11,2),
+        showWeekNumbers: false,
+      });
+  
+  }
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(parameterMap => {
+      const id = +parameterMap.get('id');
+      this.getEmployee(id);
+    });
+  }
+
+
+
+  private getEmployee(id: number) {
+    // If the id is 0, we want to create a new employee. So we intialise the employee 
+    // property with an Employee object with all properties set to null. The template 
+    // is bound to this employee property so all the form fields are displayed blank, 
+    // to enter details of a new employee we want to create
+    if (id === 0) {
+      this.employee = {
+        id: null,
+        name:null,
+        gender:null,
+        email:null,
+        phoneNumber:null,
+        contactPreference : null,
+        dateOfBirth: null,
+        department : 'select',
+        isActive: null,
+        photoPath:null,
+    
+    };
+    
+      // Resetting the form, resets any previous validation errors
+      this.createEmployeeForm.reset();
+      this.panelTitle = 'Create Employee';
+    } else {
+      // If the Id is not 0, then retrieve the respective employee using the employee 
+      // service. Copy the values into a new object and assign that object as the value 
+      // for the employee property. Otherwise the employee property holds a reference 
+      // to the employee object in the array in the EmployeeService. This means any 
+      // changes we make on the form are automatically saved, without we explicitly
+      // saving by clicking the Save button.
+     this._employeeService.getEmployee(id).subscribe(
+      (employee) => this.employee = employee,
+      (err: any) => console.log(err)
+     );
+      this.panelTitle = 'Edit Employee';
+    }
+  }
+
+
+
+  saveEmployee(empForm: NgForm): void {
+    if (this.employee.id == null) {
+      console.log(this.employee);
+      this._employeeService.addEmployee(this.employee).subscribe(
+        (data: Employee) => {
+          console.log(data);
+          //empForm.reset();
+          this.createEmployeeForm.reset();
+          this._router.navigate(['list']);
+        },
+        (error: any) => { console.log(error); }
+      );
+    } else {
+      this._employeeService.updateEmployee(this.employee).subscribe(
+        () => {
+          //empForm.reset();
+          this._router.navigate(['list']);
+          this.createEmployeeForm.reset();
+        },
+        (error: any) => { console.log(error); }
+      );
+    }
+  }
+
+
+
+
+
+
+
+}
+
+
+
+------------------------------------------------------------------------------------------------------------
+Step-4,
+in "employee-details.component.ts"
+
+
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Employee } from '../models/employee.model';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-employee-details',
+  templateUrl: './employee-details.component.html',
+  styleUrls: ['./employee-details.component.css']
+})
+export class EmployeeDetailsComponent implements OnInit {
+  employee: Employee;
+  private _id: number;
+
+  constructor(private _route: ActivatedRoute,
+    private _employeeService: EmployeeService,
+    private _router: Router) { }
+
+
+  ngOnInit() {
+    this._route.paramMap.subscribe(params => {
+      this._id = +params.get('id');
+      this._employeeService.getEmployee(this._id).subscribe(
+        (employee) => this.employee = employee,
+        (err: any) => console.log(err)
+      );
+    });
+
+  }
+
+  viewNextEmployee() {
+    if (this._id < 4) {
+      this._id = this._id + 1;
+    }
+    else {
+      this._id = 1;
+    }
+
+    this._router.navigate(['/employees', this._id], {
+      queryParamsHandling: 'preserve'
+    });
+
+
+  }
+
+}
+
+
+
+------------------------------------------------------------------------------------------------------------
+Step-5,
+"create-employee.component.html"
+<div class="panel panel-primary" *ngIf="employee">
+  <div class="panel-heading">
+    <h3 class="panel-title"> {{panelTitle}}</h3>
+  </div>
+------------------------------------------------------------------------------------------------------------
+Step-6,
+"employee.details.component.html"
+<div class="panel panel-primary" *ngIf="employee" >
+  <div class="panel-heading">
+    <h3 class="panel-title" > {{employee.name}} </h3>
+  </div>
+------------------------------------------------------------------------------------------------------------
+
+70. Angular httpclient delete example |
+Step-1,
+ 
+in "employee.service.ts"
+coding:
+
+import { Injectable } from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { throwError } from 'rxjs/internal/observable/throwError';
+import { of } from 'rxjs';
+import { delay } from 'rxjs/operators'
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+
+export class EmployeeService {
+  constructor(private httpClient: HttpClient) { }
+  
+ 
+
+  baseUrl = 'http://localhost:3000/employees';
+
+
+  getEmployees(): Observable<Employee[]> {
+    return this.httpClient.get<Employee[]>(this.baseUrl).pipe(catchError(this.handleError));
+  }
+
+
+  
+  getEmployee(id: number): Observable<Employee> {
+    return this.httpClient.get<Employee>(`${this.baseUrl}/${id}`)
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+  addEmployee(employee: Employee): Observable<Employee> {
+
+    return this.httpClient.post<Employee>(this.baseUrl, employee, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+      .pipe(catchError(this.handleError));
+
+  }
+
+
+
+  updateEmployee(employee: Employee): Observable<void> {
+    return this.httpClient.put<void>(`${this.baseUrl}/${employee.id}`, employee, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    })
+      .pipe(catchError(this.handleError));
+  }
+
+
+
+
+
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+      console.error('Client Side Error :', errorResponse.error.message);
+    } else {
+      console.error('Server Side Error :', errorResponse);
+    }
+    // return an observable with a meaningful error message to the end user
+    return throwError('There is a problem with the service.We are notified & working on it. Please try again later.');
+  }
+
+
+  deleteEmployee(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.baseUrl}/${id}`)
+        .pipe(catchError(this.handleError));
+}
+
+
+
+
+}
+
+-------------------------------------------------------------------------------------------------------
+
+Step-2,
+in "display-employee.component.ts"
+import { Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Employee } from '../models/employee.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EmployeeService } from './employee.service';
+
+@Component({
+  selector: 'app-display-employee',
+  templateUrl: './display-employee.component.html',
+  styleUrls: ['./display-employee.component.css']
+})
+export class DisplayEmployeeComponent implements OnInit {
+  private selectedEmployeeId: number;
+  @Input() employee: Employee;
+  @Input() searchTerm: string;
+// This output event will be used to notify parent component i.e
+  // ListEmployeesComponent when an employee is deleted. so the 
+  // ListEmployeesComponent can delete that respective employee
+  // from the filteredEmployees array to which the template is bound
+  @Output() notifyDelete: EventEmitter<number> = new EventEmitter<number>();
+  // This property is used in the view template to show and hide
+  // delete confirmation
+  confirmDelete = false;
+  //panelExpanded = true;
+  isHidden = false;
+ 
+  constructor(private _route: ActivatedRoute,
+     private _router: Router,
+     private _employeeService: EmployeeService) { }
+
+  ngOnInit() {
+    this.selectedEmployeeId = +this._route.snapshot.paramMap.get('id');
+  }
+
+  viewEmployee() {
+    this._router.navigate(['/employees', this.employee.id], {
+      queryParams: { 'searchTerm': this.searchTerm }
+    });
+  }
+
+  editEmployee()
+  {
+    this._router.navigate(['/edit', this.employee.id]);
+  }
+ // Call the EmployeeService delete method and raise notifyDelete event, so 
+  // the ListEemployeesComponent can delete the same employee from it's 
+  // filtered list array
+  
+deleteEmployee() {
+    this._employeeService.deleteEmployee(this.employee.id).subscribe(
+      () => console.log(`Employee with ID = ${this.employee.id} Deleted`),
+      (err) => console.log(err)
+    );
+    this.notifyDelete.emit(this.employee.id);
+  }
+
+
+
+
+} 
+-----------------------------The End Angular Crud-----------------------------------------
