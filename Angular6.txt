@@ -1,0 +1,4917 @@
+1.Creating angular 6 project |
+ng new Angular6Project –d
+
+------------------------------------------------------------------------------------------------------------
+
+2.Install Bootstrap for Angular 6 |
+
+Step-1,
+npm install bootstrap@3 jquery --save
+
+Step-2,
+"styles": [
+  "src/styles.css",
+  "node_modules/bootstrap/dist/css/bootstrap.min.css"
+]
+------------------------------------------------------------------------------------------------------------
+
+"scripts": [
+  "node_modules/jquery/dist/jquery.min.js",
+  "node_modules/bootstrap/dist/js/bootstrap.min.js"
+]
+
+------------------------------------------------------------------------------------------------------------
+Step-3,
+<button class="btn btn-primary">
+    Bootstrap Styled Button
+</button>
+------------------------------------------------------------------------------------------------------------
+
+3.Angular 6 routing tutorial |
+
+Use the following 2 Angular CLI commands to create the components.
+step-1,
+ng g c employee/create-employee --skipTests
+
+step-2,
+ng g c employee/list-employees --skipTests
+
+step-3,
+ng g m app-routing --flat=true --module=app(if we neeed)
+
+--------------------------------------------------
+
+Step-4,
+coding "in app-routing.module.ts",
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { CreateEmployeeComponent } from './employee/create-employee.component';
+import { ListEmployeesComponent } from './employee/list-employees/list-employees.component';
+
+
+
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+--------------------------------------------------------------
+
+Step-5,
+
+coding in "app-component.html"
+
+<div class="container">
+  <nav class="navbar navbar-default">
+      <ul class="nav navbar-nav">
+          <li>
+              <a routerLinkActive="active" routerLink="list">List</a>
+          </li>
+          <li>
+              <a routerLinkActive="active" routerLink="create">Create</a>
+          </li>
+      </ul>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+5.Angular form control and form group |
+
+Step-1,
+in "create-employee.components.ts"
+ onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+    
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+    
+  }
+
+---------------------------------------------------------------------------------------------------------
+Step-2,
+in "create-employee.components.ts"
+
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br/> dirty : {{ employeeForm.dirty }}
+      <br/> valid : {{ employeeForm.valid }}
+      <br/> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br/> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br/> valid : {{ employeeForm.get('fullName').valid }}
+      <br/> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+6.Angular nested form groups |
+
+step-1,
+
+in "create-employee.components.ts"
+
+Coding,
+
+ ngOnInit() {
+    this.employeeForm = new FormGroup({
+      fullName: new FormControl(),
+      email: new FormControl(),
+      skills: new FormGroup({
+        skillName: new FormControl(),
+        experienceInYears: new FormControl(),
+        proficiency: new FormControl()
+      })
+    });
+  }
+
+
+---------------------------------------------------------------
+step-2,
+in "create-employee.components.html"
+
+
+      <div formGroupName="skills">
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="skillName">
+            Skill
+          </label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="skillName"
+                placeholder="Name" formControlName="skillName">
+          </div>
+          <div class="col-sm-4">
+            <input type="text" placeholder="Experience in Years"
+                class="form-control" formControlName="experienceInYears">
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label class="col-md-2 control-label">Proficiency</label>
+          <div class="col-md-8">
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="beginner"
+                     formControlName="proficiency">Beginner
+            </label>
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="intermediate"
+                     formControlName="proficiency">Intermediate
+            </label>
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="advanced"
+                     formControlName="proficiency">Advanced
+            </label>
+          </div>
+        </div>
+      
+      </div>
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+Part-7,Angular setvalue and patchvalue methods,
+
+Step-1,
+in "create-employee.component.html"
+
+<div class="btn-toolbar">
+      <button class="btn btn-primary" type="submit">Save</button>
+      
+      <button class="btn btn-primary" type="button"
+      (click)="onLoadDataClick()">Load Data</button>
+    </div>
+----------------------------------------------------
+
+Step-2,
+for "patchValue"
+
+in "create-employee.component.ts"
+onLoadDataClick(): void {
+    this.employeeForm.patchValue({
+      fullName: 'Pragim Technologies',
+      email: 'pragim@pragimtech.com',
+      skills: {
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    });
+  }
+
+
+for "setValue"
+
+in "create-employee.component.ts"
+onLoadDataClick(): void {
+    this.employeeForm.setValue({
+      fullName: 'Pragim Technologies',
+      email: 'pragim@pragimtech.com',
+      skills: {
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    });
+  }
+
+----------------------------------------------------------------------------------------------------------
+
+
+8.Angular formbuilder example 
+
+in "Creating-employee.components.ts" modifying code.
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormBuilder } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+    this.employeeForm = this.fb.group({
+      fullName: [''],
+      email: [''],
+      skills: this.fb.group({
+        skillName: [''],
+        experienceInYears: [''],
+        proficiency: ['beginner']
+      }),
+    });
+  }
+
+
+  onLoadDataClick(): void {
+    this.employeeForm.patchValue({
+      fullName: 'Pragim Technologies',
+      email: 'pragim@pragimtech.com',
+      skills: {
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    });
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+------------------------------------------------------------------------------------------------------------
+ 
+
+9.Angular reactive forms validation |
+
+Step-1,
+ coding - in "create-employee.component.ts"
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required,
+      Validators.minLength(2), Validators.maxLength(10)]],
+      email: [''],
+      skills: this.fb.group({
+        skillName: [''],
+        experienceInYears: [''],
+        proficiency: ['beginner']
+      }),
+    });
+  }
+
+
+  onLoadDataClick(): void {
+    this.employeeForm.patchValue({
+      fullName: 'Pragim Technologies',
+      email: 'pragim@pragimtech.com',
+      skills: {
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    });
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+-------------------------------------------------------------------
+Step-2,
+ coding - in "create-employee.component.html"
+<form [formGroup]="employeeForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create Employee</h3>
+    </div>
+    <div class="panel-body">
+
+<!-------Name folder-------->
+      <div class="form-group"
+      [ngClass]="{'has-error': ((employeeForm.get('fullName').touched ||
+                                 employeeForm.get('fullName').dirty) &&
+                                 employeeForm.get('fullName').errors)}">
+  <label class="col-sm-2 control-label" for="fullName">Full Name</label>
+  <div class="col-sm-8">
+    <input id="fullName" type="text" class="form-control" formControlName="fullName">
+    <span class="help-block"
+          *ngIf="((employeeForm.get('fullName').touched ||
+                   employeeForm.get('fullName').dirty) &&
+                   employeeForm.get('fullName').errors)">
+      <span *ngIf="employeeForm.get('fullName').errors.required">
+        Full Name is required
+      </span>
+      <span *ngIf="employeeForm.get('fullName').errors.minlength ||
+                   employeeForm.get('fullName').errors.maxlength">
+          Full Name must be greater than 2 characters and less than 10 characters
+      </span>
+    </span>
+  </div>
+</div>
+
+<!-------Name folder closed-------->
+
+
+
+
+
+
+      <div class="form-group">
+        <label class="col-sm-2 control-label" for="email">Email</label>
+        <div class="col-sm-8">
+          <input id="email" formControlName="email" type="text" class="form-control">
+        </div>
+      </div>
+
+
+
+
+      <div formGroupName="skills">
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label" for="skillName">
+            Skill
+          </label>
+          <div class="col-sm-4">
+            <input type="text" class="form-control" id="skillName"
+                placeholder="Name" formControlName="skillName">
+          </div>
+          <div class="col-sm-4">
+            <input type="text" placeholder="Experience in Years"
+                class="form-control" formControlName="experienceInYears">
+          </div>
+        </div>
+      
+        <div class="form-group">
+          <label class="col-md-2 control-label">Proficiency</label>
+          <div class="col-md-8">
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="beginner"
+                     formControlName="proficiency">Beginner
+            </label>
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="intermediate"
+                     formControlName="proficiency">Intermediate
+            </label>
+            <label class="radio-inline">
+              <input id="proficiency" type="radio" value="advanced"
+                     formControlName="proficiency">Advanced
+            </label>
+          </div>
+        </div>
+      
+      </div>
+
+
+
+
+
+
+
+    </div>
+    
+    <div class="panel-footer">
+    <div class="btn-toolbar">
+      <button class="btn btn-primary" type="submit">Save</button>
+      
+      <button class="btn btn-primary" type="button"
+      (click)="onLoadDataClick()">Load Data</button>
+    </div>
+    </div>
+  
+  
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br/> dirty : {{ employeeForm.dirty }}
+      <br/> valid : {{ employeeForm.valid }}
+      <br/> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br/> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br/> valid : {{ employeeForm.get('fullName').valid }}
+      <br/> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+
+--------------------------------------------------------------------------------------------------
+
+
+10.Angular form control valuechanges |
+Step-1,
+ coding in "create-employee.component.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+  fullNameLength = 0;
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required,
+      Validators.minLength(2), Validators.maxLength(10)]],
+      email: [''],
+      skills: this.fb.group({
+        skillName: [''],
+        experienceInYears: [''],
+        proficiency: ['beginner']
+      }),
+    });
+    // Subscribe to valueChanges observable
+    this.employeeForm.get('skills') .valueChanges.subscribe(
+      (value : any) => {
+        console.log(JSON.stringify(value));
+      }
+    );
+
+  }
+
+
+  onLoadDataClick(): void {
+    this.employeeForm.patchValue({
+      fullName: 'Pragim Technologies',
+      email: 'pragim@pragimtech.com',
+      skills: {
+        skillName: 'C#',
+        experienceInYears: 5,
+        proficiency: 'beginner'
+      }
+    });
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+-------------------------------------------------------------------
+
+Step-2,
+ coding in "create-employee.component.html"
+
+<!-------Name folder-------->
+      <div class="form-group"
+      [ngClass]="{'has-error': ((employeeForm.get('fullName').touched ||
+                                 employeeForm.get('fullName').dirty) &&
+                                 employeeForm.get('fullName').errors)}">
+  <label class="col-sm-2 control-label" for="fullName">Full Name</label>
+  <div class="col-sm-8">
+    <input id="fullName" type="text" class="form-control" formControlName="fullName">
+    <label for="">{{fullNameLength}} </label>
+
+    <span class="help-block"
+          *ngIf="((employeeForm.get('fullName').touched ||
+                   employeeForm.get('fullName').dirty) &&
+                   employeeForm.get('fullName').errors)">
+      <span *ngIf="employeeForm.get('fullName').errors.required">
+        Full Name is required
+      </span>
+      <span *ngIf="employeeForm.get('fullName').errors.minlength ||
+                   employeeForm.get('fullName').errors.maxlength">
+          Full Name must be greater than 2 characters and less than 10 characters
+      </span>
+    </span>
+  </div>
+</div>
+------------------------------------------------------------------------------------------------------------
+
+
+11.Loop through all form controls in formgroup in reactive form | 
+
+Coding in "create-employee.components.ts"
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+   
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+    
+    this.employeeForm = this.fb.group({
+      fullName: [''],
+      email: [''],
+      skills: this.fb.group({
+        skillName: [''],
+        experienceInYears: [''],
+        proficiency: ['beginner']
+      }),
+    });
+    
+
+  }
+
+
+  logKeyValuePairs(group: FormGroup): void {
+    // loop through each key in the FormGroup
+    Object.keys(group.controls).forEach((key: string) => {
+      // Get a reference to the control using the FormGroup.get() method
+      const abstractControl = group.get(key);
+      // If the control is an instance of FormGroup i.e a nested FormGroup
+      // then recursively call this same method (logKeyValuePairs) passing it
+      // the FormGroup so we can get to the form controls in it
+      if (abstractControl instanceof FormGroup) {
+        this.logKeyValuePairs(abstractControl);
+        // If the control is not a FormGroup then we know it's a FormControl
+      } else {
+        console.log('Key = ' + key + ' && Value = ' + abstractControl.value);
+      }
+    });
+  }
+
+
+
+
+
+  onLoadDataClick(): void {
+    this.logKeyValuePairs(this.employeeForm);
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+---------------------------------------------------------------------------------------------------
+
+12.Move validation messages to the component class in reactive form | Text | Slides
+
+coding in "create-employee.component.ts"
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+   
+// This object will hold the messages to be displayed to the user
+// Notice, each key in this object has the same name as the
+// corresponding form control
+formErrors = {
+  'fullName': '',
+  'email': '',
+  'skillName': '',
+  'experienceInYears': '',
+  'proficiency': ''
+};
+
+// This object contains all the validation messages for this form
+
+validationMessages = {
+  'fullName': {
+    'required': 'Full Name is required.',
+    'minlength': 'Full Name must be greater than 2 characters.',
+    'maxlength': 'Full Name must be less than 10 characters.'
+  },
+  'email': {
+    'required': 'Email is required.'
+  },
+  'skillName': {
+    'required': 'Skill Name is required.',
+  },
+  'experienceInYears': {
+    'required': 'Experience is required.',
+  },
+  'proficiency': {
+    'required': 'Proficiency is required.',
+  },
+};
+
+  constructor(private fb: FormBuilder) { }
+
+
+
+
+  ngOnInit(){
+    
+      this.employeeForm = this.fb.group({
+        fullName: [''],
+        email: ['', Validators.required],
+        skills: this.fb.group({
+          skillName: ['', Validators.required],
+          experienceInYears: ['', Validators.required],
+          proficiency: ['', Validators.required],
+        }),
+      });
+      
+  
+    }
+  
+     
+    
+
+  
+
+
+  logValidationErrors(group: FormGroup): void {
+     Object.keys(group.controls).forEach((key: string) => {
+       const abstractControl = group.get(key);
+         if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+          } else {
+            // Clear the existing validation errors
+            this.formErrors[key] = '';
+            if (abstractControl && !abstractControl.valid) {
+              // Get all the validation messages of the form control
+              // that has failed the validation
+              const messages = this.validationMessages[key];
+              // Find which validation has failed. For example required,
+              // minlength or maxlength. Store that error message in the
+              // formErrors object. The UI will bind to this object to
+              // display the validation errors
+              for (const errorKey in abstractControl.errors) {
+                if (errorKey) {
+                  this.formErrors[key] += messages[errorKey] + ' ';
+                }
+              }
+            }
+          }
+    });
+  }
+
+
+
+
+
+  onLoadDataClick(): void {
+    this.logValidationErrors(this.employeeForm);
+    console.log(this.formErrors);
+  }
+
+
+ onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+------------------------------------------------------------------------------------------------------------
+
+14.Dynamically adding or removing form control validators in reactive form |
+
+Step:1, "create-employee.component.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'phone':'',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference:['email'],
+      email: ['', Validators.required],
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+    .valueChanges.subscribe((data: string) => {
+this.onContactPrefernceChange(data);
+});
+
+
+    
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+
+  onContactPrefernceChange( selectedValue: string ){
+    const phoneFormControl = this.employeeForm.get('phone');
+  if (selectedValue === 'phone') {
+    phoneFormControl.setValidators(Validators.required);
+  } else {
+    phoneFormControl.clearValidators();
+  }
+  phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      } else {
+        this.formErrors[key] = '';
+        if (abstractControl && !abstractControl.valid
+            && (abstractControl.touched || abstractControl.dirty)) {
+          const messages = this.validationMessages[key];
+          for (const errorKey in abstractControl.errors) {
+            if (errorKey) {
+              this.formErrors[key] += messages[errorKey] + ' ';
+            }
+          }
+        }
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+    this.logValidationErrors(this.employeeForm);
+    console.log(this.formErrors);
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+------------------------------------------------------------------------------------------------------
+Step-2,
+in "create-employee.component.html"
+<form [formGroup]="employeeForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create Employee</h3>
+    </div>
+    <div class="panel-body">
+
+<!-------Name folder-------->
+<div class="form-group"
+[ngClass]="{'has-error': formErrors.fullName}">
+<label class="col-sm-2 control-label" for="fullName">Full Name</label>
+<div class="col-sm-8">
+<input id="fullName" type="text" class="form-control" 
+ formControlName="fullName"  (blur)="logValidationErrors()" >
+  <span class="help-block" *ngIf="formErrors.fullName">
+    {{formErrors.fullName}}
+  </span>
+
+</div>
+</div>
+ 
+<!-------Name folder closed-------->
+
+
+<!-- Notice the click event handler on both the radio buttons. When "Email"
+radio button is clicked "email" string is passed to the event handler
+function. Similarly, when "Phone" radio button is clicked "phone"
+string is passed to the event handler function -->
+
+<div class="form-group">
+  <label class="col-md-2 control-label">Contact Preference</label>
+  <div class="col-md-8">
+    <label class="radio-inline">
+      <input type="radio" value="email" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('email')">Email
+    </label>
+    <label class="radio-inline">
+      <input type="radio" value="phone" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('phone')">Phone
+    </label>
+  </div>
+</div>
+
+<!-- Email input element -->
+<div class="form-group" [ngClass]="{'has-error': formErrors.email}">
+  <label class="col-sm-2 control-label" for="email">Email</label>
+  <div class="col-sm-8">
+    <input id="email" type="text" class="form-control"
+            formControlName="email" (blur)="logValidationErrors()">
+    <span class="help-block" *ngIf="formErrors.email">
+      {{formErrors.email}}
+    </span>
+  </div>
+</div>
+
+<!-- Phone input element -->
+<div class="form-group" [ngClass]="{'has-error': formErrors.phone}">
+  <label class="col-sm-2 control-label" for="email">Phone</label>
+  <div class="col-sm-8">
+    <input id="phone" type="text" class="form-control"
+            formControlName="phone" (blur)="logValidationErrors()">
+    <span class="help-block" *ngIf="formErrors.phone">
+      {{formErrors.phone}}
+    </span>
+  </div>
+</div>
+
+<!---------------------------------------------------->
+
+<!---------
+<div class="form-group" [ngClass]="{'has-error': formErrors.email}">
+  <label class="col-sm-2 control-label" for="email">Email</label>
+  <div class="col-sm-8">
+    <input id="email" type="text" class="form-control"
+           formControlName="email" (blur)="logValidationErrors()">
+    <span class="help-block" *ngIf="formErrors.email">
+      {{formErrors.email}}
+    </span>
+  </div>
+</div>
+
+-->
+
+<div class="well">
+  <div formGroupName="skills">
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
+      <label class="col-sm-2 control-label" for="skillName">
+        Skill
+      </label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="skillName" formControlName="skillName"
+               (blur)="logValidationErrors()" placeholder="C#, Java, Angular etc...">
+        <span class="help-block" *ngIf="formErrors.skillName">
+          {{formErrors.skillName}}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.experienceInYears}">
+      <label class="col-sm-2 control-label" for="experienceInYears">
+        Experience
+      </label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="experienceInYears"
+               formControlName="experienceInYears" placeholder="In Years"
+              (blur)="logValidationErrors()">
+        <span class="help-block" *ngIf="formErrors.experienceInYears">
+          {{formErrors.experienceInYears}}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.proficiency}">
+      <label class="col-md-2 control-label">Proficiency</label>
+      <div class="col-md-8">
+        <label class="radio-inline">
+          <input type="radio" value="beginner" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Beginner
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="intermediate" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Intermediate
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="advanced" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Advanced
+        </label>
+        <span class="help-block" *ngIf="formErrors.experienceInYears">
+          {{formErrors.proficiency}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    </div>
+    
+    <div class="panel-footer">
+    <div class="btn-toolbar">
+      <button class="btn btn-primary" type="submit">Save</button>
+      
+      <button class="btn btn-primary" type="button"
+      (click)="onLoadDataClick()">Load Data</button>
+    </div>
+    </div>
+  
+  
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br/> dirty : {{ employeeForm.dirty }}
+      <br/> valid : {{ employeeForm.valid }}
+      <br/> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br/> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br/> valid : {{ employeeForm.get('fullName').valid }}
+      <br/> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+
+------------------------------------------------------------------------------------------------------
+
+
+Angular reactive form custom validator |
+
+step-1,
+"create-employee.component.ts" coding
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'phone':'',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be pragimtech.com'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() { 
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference:['email'],
+      email: ['', [Validators.required, emailDomain]],
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+    .valueChanges.subscribe((data: string) => {
+this.onContactPrefernceChange(data);
+});
+
+
+    
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+
+
+  
+
+
+
+  onContactPrefernceChange( selectedValue: string ){
+    const phoneFormControl = this.employeeForm.get('phone');
+  if (selectedValue === 'phone') {
+    phoneFormControl.setValidators(Validators.required);
+  } else {
+    phoneFormControl.clearValidators();
+  }
+  phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      } else {
+        this.formErrors[key] = '';
+        if (abstractControl && !abstractControl.valid
+            && (abstractControl.touched || abstractControl.dirty)) {
+          const messages = this.validationMessages[key];
+          for (const errorKey in abstractControl.errors) {
+            if (errorKey) {
+              this.formErrors[key] += messages[errorKey] + ' ';
+            }
+          }
+        }
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+    this.logValidationErrors(this.employeeForm);
+    console.log(this.formErrors);
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+function emailDomain(control: AbstractControl): { [key: string]: any } | null {
+  const email: string = control.value;
+  const domain = email.substring(email.lastIndexOf('@') + 1);
+  if (email === '' || domain.toLowerCase() === 'pragimtech.com') {
+    return null;
+  } else {
+    return { 'emailDomain': true };
+  }
+}
+
+-----------------------------------------------------------------------------------------------------------
+
+No need change in “create-employee.component.html”.
+------------------------------------------------------------------------------------------------------------
+
+
+16. Angular reactive form custom validator with parameter |
+Modify in "create-employee.component.html"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'phone':'',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() { 
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference:['email'],
+      email: ['', [Validators.required, emailDomain('dell.com')]],
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+    .valueChanges.subscribe((data: string) => {
+this.onContactPrefernceChange(data);
+});
+
+
+    
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+
+
+  onContactPrefernceChange( selectedValue: string ){
+    const phoneFormControl = this.employeeForm.get('phone');
+  if (selectedValue === 'phone') {
+    phoneFormControl.setValidators(Validators.required);
+  } else {
+    phoneFormControl.clearValidators();
+  }
+  phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      } else {
+        this.formErrors[key] = '';
+        if (abstractControl && !abstractControl.valid
+            && (abstractControl.touched || abstractControl.dirty)) {
+          const messages = this.validationMessages[key];
+          for (const errorKey in abstractControl.errors) {
+            if (errorKey) {
+              this.formErrors[key] += messages[errorKey] + ' ';
+            }
+          }
+        }
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+    this.logValidationErrors(this.employeeForm);
+    console.log(this.formErrors);
+  }
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+------------------------------------------------------------------------------------------------------------	
+
+17.Angular Reusable Custom Validator |
+
+Step-1,
+create a shared folder under App folder,
+ In the shared folder, create a file with name custom.validators.ts and include the following code.
+
+import { AbstractControl } from '@angular/forms';
+
+export class CustomValidators {
+    static emailDomain(domainName: string) {
+        return (control: AbstractControl): { [key: string]: any } | null => {
+            const email: string = control.value;
+            const domain = email.substring(email.lastIndexOf('@') + 1);
+            if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+                return null;
+            } else {
+                return { 'emailDomain': true };
+            }
+        };
+    }
+}
+
+------------------------------------------------------------------------------------------------------------
+in "custom.validators.ts"
+coding:
+
+import { CustomValidators } from '../shared/custom.validators';
+
+  ngOnInit() { 
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference:['email'],
+      email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+------------------------------------------------------------------------------------------------------------
+
+
+18.Angular reactive forms cross field validation |
+
+Step-1, coding in "create-employee.component.html"
+
+ 
+<form [formGroup]="employeeForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create Employee</h3>
+    </div>
+    <div class="panel-body">
+
+<!-------Name folder-------->
+<div class="form-group"
+[ngClass]="{'has-error': formErrors.fullName}">
+<label class="col-sm-2 control-label" for="fullName">Full Name</label>
+<div class="col-sm-8">
+<input id="fullName" type="text" class="form-control" 
+ formControlName="fullName"  (blur)="logValidationErrors()" >
+  <span class="help-block" *ngIf="formErrors.fullName">
+    {{formErrors.fullName}}
+  </span>
+
+</div>
+</div>
+ 
+<!-------Name folder closed-------->
+
+
+<!-- Notice the click event handler on both the radio buttons. When "Email"
+radio button is clicked "email" string is passed to the event handler
+function. Similarly, when "Phone" radio button is clicked "phone"
+string is passed to the event handler function -->
+
+<div class="form-group">
+  <label class="col-md-2 control-label">Contact Preference</label>
+  <div class="col-md-8">
+    <label class="radio-inline">
+      <input type="radio" value="email" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('email')">Email
+    </label>
+    <label class="radio-inline">
+      <input type="radio" value="phone" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('phone')">Phone
+    </label>
+  </div>
+</div>
+
+<!-- Email input element -->
+<div formGroupName="emailGroup">
+  <div class="form-group" [ngClass]="{'has-error': formErrors.email}">
+    <label class="col-sm-2 control-label" for="email">Email</label>
+    <div class="col-sm-8">
+      <input id="email" type="text" class="form-control"
+             formControlName="email" (blur)="logValidationErrors()">
+      <span class="help-block" *ngIf="formErrors.email">
+        {{formErrors.email}}
+      </span>
+    </div>
+  </div>
+
+  <div class="form-group" [ngClass]="{'has-error': formErrors.confirmEmail
+                                                || formErrors.emailGroup}">
+    <label class="col-sm-2 control-label" for="confirmEmail">
+      Confirm Email
+    </label>
+    <div class="col-sm-8">
+      <input id="confirmEmail" type="text" class="form-control"
+             formControlName="confirmEmail" (blur)="logValidationErrors()">
+      <span class="help-block"
+            *ngIf="formErrors.confirmEmail || formErrors.emailGroup">
+        {{formErrors.confirmEmail ? formErrors.confirmEmail
+          : formErrors.emailGroup}}
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Phone input element -->
+<div class="form-group" [ngClass]="{'has-error': formErrors.phone}">
+  <label class="col-sm-2 control-label" for="email">Phone</label>
+  <div class="col-sm-8">
+    <input id="phone" type="text" class="form-control"
+            formControlName="phone" (blur)="logValidationErrors()">
+    <span class="help-block" *ngIf="formErrors.phone">
+      {{formErrors.phone}}
+    </span>
+  </div>
+</div>
+
+<!---------------------------------------------------->
+
+
+
+<div class="well">
+  <div formGroupName="skills">
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
+      <label class="col-sm-2 control-label" for="skillName">
+        Skill
+      </label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="skillName" formControlName="skillName"
+               (blur)="logValidationErrors()" placeholder="C#, Java, Angular etc...">
+        <span class="help-block" *ngIf="formErrors.skillName">
+          {{formErrors.skillName}}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.experienceInYears}">
+      <label class="col-sm-2 control-label" for="experienceInYears">
+        Experience
+      </label>
+      <div class="col-sm-4">
+        <input type="text" class="form-control" id="experienceInYears"
+               formControlName="experienceInYears" placeholder="In Years"
+              (blur)="logValidationErrors()">
+        <span class="help-block" *ngIf="formErrors.experienceInYears">
+          {{formErrors.experienceInYears}}
+        </span>
+      </div>
+    </div>
+
+    <div class="form-group" [ngClass]="{'has-error': formErrors.proficiency}">
+      <label class="col-md-2 control-label">Proficiency</label>
+      <div class="col-md-8">
+        <label class="radio-inline">
+          <input type="radio" value="beginner" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Beginner
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="intermediate" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Intermediate
+        </label>
+        <label class="radio-inline">
+          <input type="radio" value="advanced" formControlName="proficiency"
+                 (blur)="logValidationErrors()">Advanced
+        </label>
+        <span class="help-block" *ngIf="formErrors.experienceInYears">
+          {{formErrors.proficiency}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+    </div>
+    
+    <div class="panel-footer">
+    <div class="btn-toolbar">
+      <button class="btn btn-primary" type="submit">Save</button>
+      
+      <button class="btn btn-primary" type="button"
+      (click)="onLoadDataClick()">Load Data</button>
+    </div>
+    </div>
+  
+  
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br/> dirty : {{ employeeForm.dirty }}
+      <br/> valid : {{ employeeForm.valid }}
+      <br/> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br/> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br/> valid : {{ employeeForm.get('fullName').valid }}
+      <br/> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+
+
+-----------------------------------------------------------------------------------------------
+
+Step-2, coding in "create-employee.component.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'confirmEmail': '',
+    'emailGroup': '',
+    'phone': '',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid
+        && (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+    this.logValidationErrors(this.employeeForm);
+    console.log(this.formErrors);
+  }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+/*
+function emailDomain(control: AbstractControl): { [key: string]: any } | null {
+  const email: string = control.value;
+  const domain = email.substring(email.lastIndexOf('@') + 1);
+  if (email === '' || domain.toLowerCase() === 'pragimtech.com') {
+    return null;
+  } else {
+    return { 'emailDomain': true };
+  }
+}
+*/
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+// Nested form group (emailGroup) is passed as a parameter. Retrieve email and
+// confirmEmail form controls. If the values are equal return null to indicate
+// validation passed otherwise an object with emailMismatch key. Please note we
+// used this same key in the validationMessages object against emailGroup
+// property to store the corresponding validation error message
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+
+  if (emailControl.value === confirmEmailControl.value || confirmEmailControl.pristine) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+
+---------------------------------------------------------------------------------------------------------
+
+
+19.Angular formarray example |
+
+Step-1, coding in "create-employee.component.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'confirmEmail': '',
+    'emailGroup': '',
+    'phone': '',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.group({
+        skillName: ['', Validators.required],
+        experienceInYears: ['', Validators.required],
+        proficiency: ['', Validators.required]
+      }),
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid
+        && (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+/*
+function emailDomain(control: AbstractControl): { [key: string]: any } | null {
+  const email: string = control.value;
+  const domain = email.substring(email.lastIndexOf('@') + 1);
+  if (email === '' || domain.toLowerCase() === 'pragimtech.com') {
+    return null;
+  } else {
+    return { 'emailDomain': true };
+  }
+}
+*/
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+// Nested form group (emailGroup) is passed as a parameter. Retrieve email and
+// confirmEmail form controls. If the values are equal return null to indicate
+// validation passed otherwise an object with emailMismatch key. Please note we
+// used this same key in the validationMessages object against emailGroup
+// property to store the corresponding validation error message
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+
+  if (emailControl.value === confirmEmailControl.value || confirmEmailControl.pristine) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+---------------------------------------------------------------------------------------------------
+
+20.Creating formarray of formgroup objects in Angular |
+
+Step-1, in coding "create-employee.components.ts"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+    'fullName': '',
+    'email': '',
+    'confirmEmail': '',
+    'emailGroup': '',
+    'phone': '',
+    'skillName': '',
+    'experienceInYears': '',
+    'proficiency': ''
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+    'skillName': {
+      'required': 'Skill Name is required.',
+    },
+    'experienceInYears': {
+      'required': 'Experience is required.',
+    },
+    'proficiency': {
+      'required': 'Proficiency is required.',
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    });
+  }
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid
+        && (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+
+      if (abstractControl instanceof FormArray) {
+        for (const control of abstractControl.controls) {
+          if (control instanceof FormGroup) {
+            this.logValidationErrors(control);
+          }
+        }
+      }
+    });
+  }
+
+
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+// Nested form group (emailGroup) is passed as a parameter. Retrieve email and
+// confirmEmail form controls. If the values are equal return null to indicate
+// validation passed otherwise an object with emailMismatch key. Please note we
+// used this same key in the validationMessages object against emailGroup
+// property to store the corresponding validation error message
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+
+  if (emailControl.value === confirmEmailControl.value || confirmEmailControl.pristine) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+--------------------------------------------------------------------------------------------------------
+
+Step-2,
+coding-"employee.component.html",
+
+<form [formGroup]="employeeForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create Employee</h3>
+    </div>
+    <div class="panel-body">
+
+      <!-------Name folder-------->
+      <div class="form-group" [ngClass]="{'has-error': formErrors.fullName}">
+        <label class="col-sm-2 control-label" for="fullName">Full Name</label>
+        <div class="col-sm-8">
+          <input id="fullName" type="text" class="form-control" formControlName="fullName"
+            (blur)="logValidationErrors()">
+          <span class="help-block" *ngIf="formErrors.fullName">
+            {{formErrors.fullName}}
+          </span>
+
+        </div>
+      </div>
+
+      <!-------Name folder closed-------->
+
+
+      <!-- Notice the click event handler on both the radio buttons. When "Email"
+radio button is clicked "email" string is passed to the event handler
+function. Similarly, when "Phone" radio button is clicked "phone"
+string is passed to the event handler function -->
+
+      <div class="form-group">
+        <label class="col-md-2 control-label">Contact Preference</label>
+        <div class="col-md-8">
+          <label class="radio-inline">
+            <input type="radio" value="email" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('email')">Email
+          </label>
+          <label class="radio-inline">
+            <input type="radio" value="phone" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('phone')">Phone
+          </label>
+        </div>
+      </div>
+
+      <!-- Email input element -->
+      <div formGroupName="emailGroup">
+        <div class="form-group" [ngClass]="{'has-error': formErrors.email}">
+          <label class="col-sm-2 control-label" for="email">Email</label>
+          <div class="col-sm-8">
+            <input id="email" type="text" class="form-control" formControlName="email" (blur)="logValidationErrors()">
+            <span class="help-block" *ngIf="formErrors.email">
+              {{formErrors.email}}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.confirmEmail
+                                                || formErrors.emailGroup}">
+          <label class="col-sm-2 control-label" for="confirmEmail">
+            Confirm Email
+          </label>
+          <div class="col-sm-8">
+            <input id="confirmEmail" type="text" class="form-control" formControlName="confirmEmail"
+              (blur)="logValidationErrors()">
+            <span class="help-block" *ngIf="formErrors.confirmEmail || formErrors.emailGroup">
+              {{formErrors.confirmEmail ? formErrors.confirmEmail
+          : formErrors.emailGroup}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone input element -->
+      <div class="form-group" [ngClass]="{'has-error': formErrors.phone}">
+        <label class="col-sm-2 control-label" for="email">Phone</label>
+        <div class="col-sm-8">
+          <input id="phone" type="text" class="form-control" formControlName="phone" (blur)="logValidationErrors()">
+          <span class="help-block" *ngIf="formErrors.phone">
+            {{formErrors.phone}}
+          </span>
+        </div>
+      </div>
+
+      <!---------------------------------------------------->
+
+
+
+      <div class="well">
+        <div formArrayName="skills">
+          <div formGroupName="0">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
+              <label class="col-sm-2 control-label" for="skillName">
+                Skill
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="skillName" formControlName="skillName"
+                  (blur)="logValidationErrors()" placeholder="C#, Java, Angular etc...">
+                <span class="help-block" *ngIf="formErrors.skillName">
+                  {{formErrors.skillName}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.experienceInYears}">
+              <label class="col-sm-2 control-label" for="experienceInYears">
+                Experience
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="experienceInYears" formControlName="experienceInYears"
+                  placeholder="In Years" (blur)="logValidationErrors()">
+                <span class="help-block" *ngIf="formErrors.experienceInYears">
+                  {{formErrors.experienceInYears}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.proficiency}">
+              <label class="col-md-2 control-label">Proficiency</label>
+              <div class="col-md-8">
+                <label class="radio-inline">
+                  <input type="radio" value="beginner" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Beginner
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="intermediate" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Intermediate
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="advanced" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Advanced
+                </label>
+                <span class="help-block" *ngIf="formErrors.experienceInYears">
+                  {{formErrors.proficiency}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="btn-toolbar">
+        <button class="btn btn-primary" type="submit">Save</button>
+
+        <button class="btn btn-primary" type="button" (click)="onLoadDataClick()">Load Data</button>
+      </div>
+    </div>
+
+
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br /> dirty : {{ employeeForm.dirty }}
+      <br /> valid : {{ employeeForm.valid }}
+      <br /> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br /> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br /> valid : {{ employeeForm.get('fullName').valid }}
+      <br /> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+------------------------------------------------------------------------------------------------------
+ 
+21.Angular dynamic forms tutorial |
+
+Step-1,
+coding in "create-emplyee.component.ts".
+
+addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+
+Step-2,
+coding in "create-emplyee.component.html".
+
+
+      <div class="well">
+
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-4">
+            <button type="button" class="btn btn-primary" (click)="addSkillButtonClick()">
+              Add Skill
+            </button>
+          </div>
+        </div>
+
+
+        <div formArrayName="skills" 
+        *ngFor="let skill of employeeForm.get('skills').controls; let i = index">
+        
+          <div [formGroupName]="i">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
+              <label class="col-sm-2 control-label" for="skillName">
+                Skill
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="skillName" formControlName="skillName"
+                  (blur)="logValidationErrors()" placeholder="C#, Java, Angular etc...">
+                <span class="help-block" *ngIf="formErrors.skillName">
+                  {{formErrors.skillName}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.experienceInYears}">
+              <label class="col-sm-2 control-label" for="experienceInYears">
+                Experience
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="experienceInYears" formControlName="experienceInYears"
+                  placeholder="In Years" (blur)="logValidationErrors()">
+                <span class="help-block" *ngIf="formErrors.experienceInYears">
+                  {{formErrors.experienceInYears}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.proficiency}">
+              <label class="col-md-2 control-label">Proficiency</label>
+              <div class="col-md-8">
+                <label class="radio-inline">
+                  <input type="radio" value="beginner" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Beginner
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="intermediate" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Intermediate
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="advanced" formControlName="proficiency"
+                    (blur)="logValidationErrors()">Advanced
+                </label>
+                <span class="help-block" *ngIf="formErrors.experienceInYears">
+                  {{formErrors.proficiency}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+  ----------------------------------------------------------------------------------------------------------
+
+22.Generate unique id value for dynamically created form controls in angular |
+
+Program in "create-employee.component.html"
+
+ <div formArrayName="skills" 
+        *ngFor="let skill of employeeForm.get('skills').controls; let i = index">
+        
+          <div [formGroupName]="i">
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.skillName}">
+              <label class="col-sm-2 control-label" [attr.for]="'skillName'+i">
+                Skill
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="{{'skillName'+i}}" formControlName="skillName"
+                  (blur)="logValidationErrors()" placeholder="C#, Java, Angular etc...">
+                <span class="help-block" *ngIf="formErrors.skillName">
+                  {{formErrors.skillName}}
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error': formErrors.experienceInYears}">
+              <label class="col-sm-2 control-label" [attr.for]="'experienceInYears'+i">
+                Experience
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" [id]="'experienceInYears'+i" formControlName="experienceInYears"
+                  placeholder="In Years" (blur)="logValidationErrors()">
+                <span class="help-block" *ngIf="formErrors.experienceInYears">
+                  {{formErrors.experienceInYears}}
+                </span>
+              </div>
+            </div>
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+23.Angular dynamic forms validation |
+
+Step -1,
+in "create-employee.component.html"
+
+<form [formGroup]="employeeForm" class="form-horizontal" (ngSubmit)="onSubmit()">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Create Employee</h3>
+    </div>
+    <div class="panel-body">
+
+      <!-------Name folder-------->
+      <div class="form-group" [ngClass]="{'has-error': formErrors.fullName}">
+        <label class="col-sm-2 control-label" for="fullName">Full Name</label>
+        <div class="col-sm-8">
+          <input id="fullName" type="text" class="form-control" formControlName="fullName"
+            (blur)="logValidationErrors()">
+          <span class="help-block" *ngIf="formErrors.fullName">
+            {{formErrors.fullName}}
+          </span>
+
+        </div>
+      </div>
+
+      <!-------Name folder closed-------->
+
+
+      <!-- Notice the click event handler on both the radio buttons. When "Email"
+radio button is clicked "email" string is passed to the event handler
+function. Similarly, when "Phone" radio button is clicked "phone"
+string is passed to the event handler function -->
+
+      <div class="form-group">
+        <label class="col-md-2 control-label">Contact Preference</label>
+        <div class="col-md-8">
+          <label class="radio-inline">
+            <input type="radio" value="email" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('email')">Email
+          </label>
+          <label class="radio-inline">
+            <input type="radio" value="phone" formControlName="contactPreference"
+              (click)="onContactPrefernceChange('phone')">Phone
+          </label>
+        </div>
+      </div>
+
+      <!-- Email input element -->
+      <div formGroupName="emailGroup">
+        <div class="form-group" [ngClass]="{'has-error': formErrors.email}">
+          <label class="col-sm-2 control-label" for="email">Email</label>
+          <div class="col-sm-8">
+            <input id="email" type="text" class="form-control" formControlName="email" (blur)="logValidationErrors()">
+            <span class="help-block" *ngIf="formErrors.email">
+              {{formErrors.email}}
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group" [ngClass]="{'has-error': formErrors.confirmEmail
+                                                || formErrors.emailGroup}">
+          <label class="col-sm-2 control-label" for="confirmEmail">
+            Confirm Email
+          </label>
+          <div class="col-sm-8">
+            <input id="confirmEmail" type="text" class="form-control" formControlName="confirmEmail"
+              (blur)="logValidationErrors()">
+            <span class="help-block" *ngIf="formErrors.confirmEmail || formErrors.emailGroup">
+              {{formErrors.confirmEmail ? formErrors.confirmEmail
+          : formErrors.emailGroup}}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone input element -->
+      <div class="form-group" [ngClass]="{'has-error': formErrors.phone}">
+        <label class="col-sm-2 control-label" for="email">Phone</label>
+        <div class="col-sm-8">
+          <input id="phone" type="text" class="form-control" formControlName="phone" (blur)="logValidationErrors()">
+          <span class="help-block" *ngIf="formErrors.phone">
+            {{formErrors.phone}}
+          </span>
+        </div>
+      </div>
+
+      <!---------------------------------------------------->
+
+
+
+      <div class="well">
+
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-4">
+            <button type="button" class="btn btn-primary" (click)="addSkillButtonClick()">
+              Add Skill
+            </button>
+          </div>
+        </div>
+
+
+        <div formArrayName="skills" 
+        *ngFor="let skill of employeeForm.get('skills').controls; let i = index">
+        
+          <div [formGroupName]="i">
+
+            <div class="form-group" [ngClass]="{'has-error':
+            skill.get('skillName').invalid && skill.get('skillName').touched}">
+              <label class="col-sm-2 control-label" [attr.for]="'skillName'+i">
+                Skill
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" id="{{'skillName'+i}}" formControlName="skillName"
+                   placeholder="C#, Java, Angular etc...">
+                <span class="help-block" *ngIf="skill.get('skillName').errors?.required &&
+                skill.get('skillName').touched">
+                  Skill Name is required
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error':
+            skill.get('experienceInYears').invalid && skill.get('experienceInYears').touched}">
+              <label class="col-sm-2 control-label" [attr.for]="'experienceInYears'+i">
+                Experience
+              </label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" [id]="'experienceInYears'+i" formControlName="experienceInYears"
+                  placeholder="In Years" >
+                <span class="help-block" *ngIf="skill.get('experienceInYears').errors?.required &&
+                skill.get('experienceInYears').touched">
+                Experience is required
+                </span>
+              </div>
+            </div>
+
+            <div class="form-group" [ngClass]="{'has-error':
+            skill.get('proficiency').invalid && skill.get('proficiency').touched}">
+              <label class="col-md-2 control-label">Proficiency</label>
+              <div class="col-md-8">
+                <label class="radio-inline">
+                  <input type="radio" value="beginner" formControlName="proficiency"
+                    >Beginner
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="intermediate" formControlName="proficiency"
+                    >Intermediate
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="advanced" formControlName="proficiency"
+                    >Advanced
+                </label>
+                <span class="help-block" *ngIf="skill.get('proficiency').errors?.required &&
+                skill.get('proficiency').touched">
+                Proficiency is required
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+  
+
+
+
+    </div>
+
+    <div class="panel-footer">
+      <div class="btn-toolbar">
+        <button class="btn btn-primary" type="submit">Save</button>
+
+        <button class="btn btn-primary" type="button" (click)="onLoadDataClick()">Load Data</button>
+      </div>
+    </div>
+
+
+  </div>
+</form>
+
+<table border="1">
+  <tr>
+    <th style="padding: 10px">FormGroup</th>
+    <th style="padding: 10px">FormControl (fullName)</th>
+  </tr>
+  <tr>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.touched }}
+      <br /> dirty : {{ employeeForm.dirty }}
+      <br /> valid : {{ employeeForm.valid }}
+      <br /> Form Values : {{employeeForm.value | json}}
+    </td>
+    <td style="padding: 10px">
+      touched : {{ employeeForm.get('fullName').touched }}
+      <br /> dirty : {{ employeeForm.get('fullName').dirty }}
+      <br /> valid : {{ employeeForm.get('fullName').valid }}
+      <br /> FullName Value : {{employeeForm.get('fullName').value}}
+    </td>
+  </tr>
+</table>
+
+
+-----------------------------------------------------------------------------------------------------------
+Step-2,
+ "create-employee.component.html"
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+  };
+
+  constructor(private fb: FormBuilder) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+  }
+
+
+  addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+  
+
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    });
+  }
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      this.formErrors[key] = '';
+      if (abstractControl && !abstractControl.valid
+        && (abstractControl.touched || abstractControl.dirty)) {
+        const messages = this.validationMessages[key];
+        for (const errorKey in abstractControl.errors) {
+          if (errorKey) {
+            this.formErrors[key] += messages[errorKey] + ' ';
+          }
+        }
+      }
+      if (abstractControl instanceof FormGroup) {
+        this.logValidationErrors(abstractControl);
+      }
+
+     
+    });
+  }
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+
+  if (emailControl.value === confirmEmailControl.value || confirmEmailControl.pristine) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+24.Angular formarray validation |
+
+Modify in "create-employee.component.html"
+
+<button type="button" class="btn btn-primary"
+        (click)="addSkillButtonClick()"
+        [disabled]="employeeForm.get('skills').invalid">
+  Add Skill
+</button>
+
+--------------------------------------------------------------------------------------------------------
+We want the <hr> element to be generated, only if we have more than 1 skills form group, hence we have bound *ngIf directive on the <hr> element to i>0
+
+<div formArrayName="skills"
+     *ngFor="let skill of employeeForm.get('skills').controls; let i = index">
+  <hr *ngIf="i>0">
+  <div [formGroupName]="i">
+-------------------------------------------------------------------------------------------------------
+In the CSS file, include the following style for the <hr> element
+
+hr {
+    border: 1px solid silver;
+}
+
+------------------------------------------------------------------------------------------------------------
+
+
+25.Remove dynamically created form controls in angular |
+
+Here is the  HTML for the DELETE button
+
+<div class="col-sm-6" *ngIf="employeeForm.get('skills').length>1">
+  <button type="button" class="btn btn-danger btn-sm pull-right"
+          title="Delete Skill" (click)="removeSkillButtonClick(i)">
+    <span class="glyphicon glyphicon-remove"></span>
+  </button>
+</div>
+
+--------------------------------------------
+
+Include the following method in the component class. 
+
+removeSkillButtonClick(skillGroupIndex: number): void {
+  (<FormArray>this.employeeForm.get('skills')).removeAt(skillGroupIndex);
+}
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+26.RxJS operators in angular services |
+
+Step-1,
+
+Creating a fake online REST API
+"npm install -g json-server "
+
+Create db.json file in the root project folder. Copy and paste the following JSON data in the file.
+
+{
+    "employees": [
+        {
+            "id": 1,
+            "fullName": "Mark",
+            "contactPreference": "email",
+            "email": "mark@email.com",
+            "phone": "5641238971",
+            "skills": [
+                {
+                    "skillName": "C#",
+                    "experienceInYears": 1,
+                    "proficiency": "beginner"
+                },
+                {
+                    "skillName": "Java",
+                    "experienceInYears": 2,
+                    "proficiency": "intermediate"
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "fullName": "John",
+            "contactPreference": "phone",
+            "email": "john@email.com",
+            "phone": "3242138971",
+            "skills": [
+                {
+                    "skillName": "Angular",
+                    "experienceInYears": 2,
+                    "proficiency": "beginner"
+                },
+                {
+                    "skillName": "HTML",
+                    "experienceInYears": 2,
+                    "proficiency": "intermediate"
+                },
+                {
+                    "skillName": "LINQ",
+                    "experienceInYears": 3,
+                    "proficiency": "advanced"
+                }
+            ]
+        }
+    ]
+}
+-------------------------------------------------------------------
+
+Step-2,
+Execute the following command to start the server
+
+json-server --watch db.json
+
+At this point, fire up the browser and navigate to http://localhost:3000/employees/ to see the list of all employees along with their skills. You can test this REST API using a tool like fiddler. 
+
+
+-----------------------------------------------------------------------
+
+Step-3,
+Add a file in the employee folder with name ISkill.ts. Copy and paste the following code.
+
+export interface ISkill {
+    skillName: string;
+    experienceInYears: number;
+    proficiency: string;
+}
+
+
+--------------------------------------------------------------------
+
+
+
+
+
+
+
+
+Step-4,
+
+Add a file in the employee folder with name IEmployee.ts. Copy and paste the following code.
+
+import { ISkill } from './ISkill';
+
+export interface IEmployee {
+    id: number;
+    fullName: string;
+    email: string;
+    phone?: number;
+    contactPreference: string;
+    skills: ISkill[];
+}
+
+
+
+------------------------------------------------------------------
+
+Step-5,
+Creating Angular Service
+
+Add a file in the employee folder with name employee.service.ts. Copy and paste the following code.
+
+import { Injectable } from '@angular/core';
+import { IEmployee } from './IEmployee';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+@Injectable()
+export class EmployeeService {
+    baseUrl = 'http://localhost:3000/employees';
+    constructor(private httpClient: HttpClient) {
+    }
+
+    getEmployees(): Observable<IEmployee[]> {
+        return this.httpClient.get<IEmployee[]>(this.baseUrl)
+            .pipe(catchError(this.handleError));
+    }
+
+    private handleError(errorResponse: HttpErrorResponse) {
+        if (errorResponse.error instanceof ErrorEvent) {
+            console.error('Client Side Error :', errorResponse.error.message);
+        } else {
+            console.error('Server Side Error :', errorResponse);
+        }
+        return throwError('There is a problem with the service. We are notified & working on it. Please try again later.');
+    }
+
+    getEmployee(id: number): Observable<IEmployee> {
+        return this.httpClient.get<IEmployee>(`${this.baseUrl}/${id}`)
+            .pipe(catchError(this.handleError));
+    }
+
+    addEmployee(employee: IEmployee): Observable<IEmployee> {
+        return this.httpClient.post<IEmployee>(this.baseUrl, employee, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        })
+        .pipe(catchError(this.handleError));
+    }
+
+    updateEmployee(employee: IEmployee): Observable<void> {
+        return this.httpClient.put<void>(`${this.baseUrl}/${employee.id}`, employee, {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+        })
+            .pipe(catchError(this.handleError));
+    }
+
+    deleteEmployee(id: number): Observable<void> {
+        return this.httpClient.delete<void>(`${this.baseUrl}/${id}`)
+            .pipe(catchError(this.handleError));
+    }
+}
+-----------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+Step-6,
+
+Copy and paste the following HTML in list-employees.component.html. 
+
+<div class="table-responsive">
+  <table class="table table-bordered" *ngIf="employees && employees.length">
+    <thead>
+      <tr class="bg-primary">
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Contact Preference</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <td>{{ employee.fullName }}</td>
+        <td>{{ employee.email }}</td>
+        <td>{{ employee.phone }}</td>
+        <td>{{ employee.contactPreference }}</td>
+        <td> <button class="btn btn-primary">Edit</button> </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+
+--------------------------------------------------------------------
+
+Step-7,
+
+Copy and paste the following code in list-employees.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { EmployeeService } from './employee.service';
+import { IEmployee } from './IEmployee';
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  employees: IEmployee[];
+
+  constructor(private _employeeService: EmployeeService) { }
+
+  ngOnInit() {
+    this._employeeService.getEmployees().subscribe(
+      (employeeList) => this.employees = employeeList,
+      (err) => console.log(err)
+    );
+  }
+
+}
+
+---------------------------------------------------------------
+
+Step-8
+Changes in app.module.ts file
+
+To be able to use EmployeeService in ListEmployeesComponent we have to register it. Since we want EmployeeService to be available across the entire application, Let's register it in the application root module AppModule.
+
+
+
+Step-9,
+
+Import EmployeeService and include it in the providers array of @NgModule decorator of AppModule. Employee service uses angular's HttpClient service. To be able to use this we have to import HttpClientModule in the AppModule and include it in the imports array.
+
+import { EmployeeService } from './employee/employee.service';
+import { HttpClientModule } from '@angular/common/http';
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    CreateEmployeeComponent,
+    ListEmployeesComponent
+  ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule
+  ],
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+------------------------------------------------------------------------------------------------------------
+
+27.Angular reactive forms edit example |
+
+Step-1,
+Changes in app-routing.module.ts
+
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'edit/:id', component: CreateEmployeeComponent },
+  { path: '', redirectTo: '/list', pathMatch: 'full' }
+];
+
+-----------------------------------------------------------------------------------------------------------
+
+Step-2,
+
+Changes in list-employees.component.html : Include click event binding on the Edit button.
+
+<td>
+  <button class="btn btn-primary" (click)="editButtonClick(employee.id)">
+    Edit
+  </button>
+</td>
+
+and
+
+<button class="btn btn-primary" type="submit" [disabled]="employeeForm.invalid">
+  Save
+</button>
+
+----------------------------------------------------------------------------------------------------------
+
+Step-3,
+Changes in list-employees.component.ts,
+
+import { Component, OnInit } from '@angular/core';
+import { EmployeeService } from './employee.service';
+import { IEmployee } from './IEmployee';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-list-employees',
+  templateUrl: './list-employees.component.html',
+  styleUrls: ['./list-employees.component.css']
+})
+export class ListEmployeesComponent implements OnInit {
+  employees: IEmployee[];
+
+  constructor(private _employeeService: EmployeeService,
+    private _router: Router) { }
+
+  ngOnInit() {
+    this._employeeService.getEmployees().subscribe(
+      (listEmployees) => this.employees = listEmployees,
+      (err) => console.log(err)
+    );
+  }
+
+
+  editButtonClick(employeeId: number) {
+    this._router.navigate(['/edit', employeeId]);
+  }
+
+}
+
+----------------------------------------------------------------------------------------------------------
+
+Step-4,
+Changes in create-employee.component.ts
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+import { ActivatedRoute } from '@angular/router';
+import { EmployeeService } from './employee.service';
+import { IEmployee } from './IEmployee';
+import { ISkill } from './ISkill';
+
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+  };
+
+  constructor(private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+
+
+    this.route.paramMap.subscribe(params => {
+      const empId = +params.get('id');
+      if (empId) {
+        this.getEmployee(empId);
+      }
+    });
+  }
+
+
+
+getEmployee(id: number) {
+  this.employeeService.getEmployee(id)
+    .subscribe(
+      (employee: IEmployee) => this.editEmployee(employee),
+      (err: any) => console.log(err)
+    );
+}
+
+editEmployee(employee: IEmployee) {
+  this.employeeForm.patchValue({
+    fullName: employee.fullName,
+    contactPreference: employee.contactPreference,
+    emailGroup: {
+      email: employee.email,
+      confirmEmail: employee.email
+    },
+    phone: employee.phone
+  });
+}
+  
+
+
+  addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+  
+
+  removeSkillButtonClick(skillGroupIndex: number): void {
+    (<FormArray>this.employeeForm.get('skills')).removeAt(skillGroupIndex);
+  }
+
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    });
+  }
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+  Object.keys(group.controls).forEach((key: string) => {
+    const abstractControl = group.get(key);
+
+    this.formErrors[key] = '';
+    // abstractControl.value !== '' (This condition ensures if there is a value in the
+    // form control and it is not valid, then display the validation error)
+    if (abstractControl && !abstractControl.valid &&
+        (abstractControl.touched || abstractControl.dirty || abstractControl.value !== '')) {
+      const messages = this.validationMessages[key];
+
+      for (const errorKey in abstractControl.errors) {
+        if (errorKey) {
+          this.formErrors[key] += messages[errorKey] + ' ';
+        }
+      }
+    }
+
+    if (abstractControl instanceof FormGroup) {
+      this.logValidationErrors(abstractControl);
+    }
+  });
+}
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+  onSubmit(): void {
+    console.log(this.employeeForm.touched);
+    console.log(this.employeeForm.value)
+
+    console.log(this.employeeForm.controls.fullName.touched);
+    console.log(this.employeeForm.get('fullName').value);
+
+  }
+}
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+}
+
+
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+  // If confirm email control value is not an empty string, and if the value
+  // does not match with email control value, then the validation fails
+  if (emailControl.value === confirmEmailControl.value
+    || (confirmEmailControl.pristine && confirmEmailControl.value === '')) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+
+
+
+----------------------------------------------------------------------------------------------------------
+
+28-Angular populate formarray |
+
+in "create-employee.component.ts"
+
+To achieve this modify editEmployee() method in create-employee.component.ts as shown below.
+
+Notice we are using setControl() method to replace the skills FormArray with the FormArray that setExistingSkills() method returns.
+
+editEmployee(employee: IEmployee) {
+  this.employeeForm.patchValue({
+    fullName: employee.fullName,
+    contactPreference: employee.contactPreference,
+    emailGroup: {
+      email: employee.email,
+      confirmEmail: employee.email
+    },
+    phone: employee.phone
+  });
+
+  this.employeeForm.setControl('skills', this.setExistingSkills(employee.skills));
+}
+
+setExistingSkills() method
+loops through each skill object of an employee
+Creates a FormGroup with 3 form controls (skillName, experienceInYears, proficiency)
+Pushes the FormGroup into the FormArray
+Finally, this FormArray with the existing skills of the employee is returned
+setExistingSkills(skillSets: ISkill[]): FormArray {
+  const formArray = new FormArray([]);
+  skillSets.forEach(s => {
+    formArray.push(this.fb.group({
+      skillName: s.skillName,
+      experienceInYears: s.experienceInYears,
+      proficiency: s.proficiency
+    }));
+  });
+
+  return formArray;
+}
+
+Important - Programmatically changing a formarray in angular does not change dirty state : At this point, if you remove one of the skill groups from the FormArray by clicking the "Delete Skill" button, notice the dirty and touched state of the form is still false. 
+
+This is because, the state properties like dirty, touched etc are designed to indicate whether a user has interacted with the form. 
+
+By default, programmatic change to value of a form control will not flip the value of these properties. However, in some cases you may need to mark form controls, form groups and form arrays as touched, dirty etc. In such cases you can explicitly do so by calling markAsDirty() and markAsTouched() methods.
+
+In our case, when a SKILL form group is removed from the FormArray we want to mark the formArray as touched and dirty. To achieve this, we are using markAsDirty() and markAsTouched() methods.
+
+removeSkillButtonClick(skillGroupIndex: number): void {
+  const skillsFormArray = <FormArray>this.employeeForm.get('skills');
+  skillsFormArray.removeAt(skillGroupIndex);
+  skillsFormArray.markAsDirty();
+  skillsFormArray.markAsTouched();
+}
+
+----------------------------------------------------------------------------------------------------
+
+
+29.Angular reactive forms put example |
+
+Change in "create-employee.component.ts"
+
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+import { ActivatedRoute } from '@angular/router';
+import { EmployeeService } from './employee.service';
+import { IEmployee } from './IEmployee';
+import { ISkill } from './ISkill';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+  employee: IEmployee;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+  };
+
+  constructor(private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService,
+    private router: Router) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+
+
+    this.route.paramMap.subscribe(params => {
+      const empId = +params.get('id');
+      if (empId) {
+        this.getEmployee(empId);
+      }
+    });
+  }
+
+
+
+getEmployee(id: number) {
+  this.employeeService.getEmployee(id)
+    .subscribe(
+      (employee: IEmployee) => {
+        // Store the employee object returned by the
+        // REST API in the employee property
+        this.employee = employee;
+        this.editEmployee(employee);
+      },
+      (err: any) => console.log(err)
+    );
+}
+
+
+
+editEmployee(employee: IEmployee) {
+  this.employeeForm.patchValue({
+    fullName: employee.fullName,
+    contactPreference: employee.contactPreference,
+    emailGroup: {
+      email: employee.email,
+      confirmEmail: employee.email
+    },
+    phone: employee.phone
+  });
+  
+  this.employeeForm.setControl('skills', this.setExistingSkills(employee.skills));
+}
+
+setExistingSkills(skillSets: ISkill[]): FormArray {
+  const formArray = new FormArray([]);
+  skillSets.forEach(s => {
+    formArray.push(this.fb.group({
+      skillName: s.skillName,
+      experienceInYears: s.experienceInYears,
+      proficiency: s.proficiency
+    }));
+  });
+
+  return formArray;
+}
+  
+
+
+  addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+  
+  removeSkillButtonClick(skillGroupIndex: number): void {
+    const skillsFormArray = <FormArray>this.employeeForm.get('skills');
+    skillsFormArray.removeAt(skillGroupIndex);
+    skillsFormArray.markAsDirty();
+    skillsFormArray.markAsTouched();
+  }
+
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    });
+  }
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+  Object.keys(group.controls).forEach((key: string) => {
+    const abstractControl = group.get(key);
+
+    this.formErrors[key] = '';
+    // abstractControl.value !== '' (This condition ensures if there is a value in the
+    // form control and it is not valid, then display the validation error)
+    if (abstractControl && !abstractControl.valid &&
+        (abstractControl.touched || abstractControl.dirty || abstractControl.value !== '')) {
+      const messages = this.validationMessages[key];
+
+      for (const errorKey in abstractControl.errors) {
+        if (errorKey) {
+          this.formErrors[key] += messages[errorKey] + ' ';
+        }
+      }
+    }
+
+    if (abstractControl instanceof FormGroup) {
+      this.logValidationErrors(abstractControl);
+    }
+  });
+}
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+  onSubmit(): void {
+    this.mapFormValuesToEmployeeModel();
+  this.employeeService.updateEmployee(this.employee).subscribe(
+    () => this.router.navigate(['list']),
+    (err: any) => console.log(err)
+  );
+
+  }
+  mapFormValuesToEmployeeModel() {
+    this.employee.fullName = this.employeeForm.value.fullName;
+    this.employee.contactPreference = this.employeeForm.value.contactPreference;
+    this.employee.email = this.employeeForm.value.emailGroup.email;
+    this.employee.phone = this.employeeForm.value.phone;
+    this.employee.skills = this.employeeForm.value.skills;
+  }
+}
+
+
+
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+  
+}
+
+
+
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+  // If confirm email control value is not an empty string, and if the value
+  // does not match with email control value, then the validation fails
+  if (emailControl.value === confirmEmailControl.value
+    || (confirmEmailControl.pristine && confirmEmailControl.value === '')) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+
+
+-------------------------------------------------------------------------------------------------------
+
+30.Angular reactive forms post example|
+
+Step-1, create-employee.component.html.
+
+<h3 class="panel-title">{{pageTitle}}</h3>
+---------------------------------------------------------------------------------------------------
+
+Step-2, create-employee.component.ts,
+
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, AbstractControl, FormArray, FormControl } from '@angular/forms';
+import { CustomValidators } from '../shared/custom.validators';
+import { ActivatedRoute } from '@angular/router';
+import { EmployeeService } from './employee.service';
+import { IEmployee } from './IEmployee';
+import { ISkill } from './ISkill';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-create-employee',
+  templateUrl: './create-employee.component.html',
+  styleUrls: ['./create-employee.component.css']
+})
+export class CreateEmployeeComponent implements OnInit {
+  employeeForm: FormGroup;
+  employee: IEmployee;
+  pageTitle: string;
+
+  // This object will hold the messages to be displayed to the user
+  // Notice, each key in this object has the same name as the
+  // corresponding form control
+  formErrors = {
+  };
+
+  // This object contains all the validation messages for this form
+  validationMessages = {
+    'fullName': {
+      'required': 'Full Name is required.',
+      'minlength': 'Full Name must be greater than 2 characters.',
+      'maxlength': 'Full Name must be less than 10 characters.'
+    },
+    'email': {
+      'required': 'Email is required.',
+      'emailDomain': 'Email domian should be dell.com'
+    },
+
+    'confirmEmail': {
+      'required': 'Confirm Email is required.'
+    },
+    'emailGroup': {
+      'emailMismatch': 'Email and Confirm Email do not match.'
+    },
+
+    'phone': {
+      'required': 'Phone number is required.'
+    },
+  };
+
+  constructor(private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private employeeService: EmployeeService,
+    private router: Router) { }
+
+
+  ngOnInit() {
+
+    this.employeeForm = this.fb.group({
+      fullName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(10)]],
+      contactPreference: ['email'],
+
+      emailGroup: this.fb.group({
+        email: ['', [Validators.required, emailDomain('dell.com')]],
+        confirmEmail: ['', [Validators.required]],
+      }, { validator: matchEmails }),
+      //email: ['',[Validators.required, CustomValidators.emailDomain('dell.com')]],
+
+      phone: [''],
+      skills: this.fb.array([
+        this.addSkillFormGroup()
+      ])
+    });
+
+
+
+    this.employeeForm.get('contactPreference')
+      .valueChanges.subscribe((data: string) => {
+        this.onContactPrefernceChange(data);
+      });
+
+
+
+    // When any of the form control value in employee form changes
+    // our validation function logValidationErrors() is called
+    this.employeeForm.valueChanges.subscribe((data) => {
+      this.logValidationErrors(this.employeeForm);
+    });
+
+
+    this.route.paramMap.subscribe(params => {
+      const empId = +params.get('id');
+      if (empId) {
+        this.pageTitle = 'Edit Employee';
+        this.getEmployee(empId);
+      } else {
+        this.pageTitle = 'Create Employee';
+        this.employee = {
+          id: null,
+          fullName: '',
+          contactPreference: '',
+          email: '',
+          phone: null,
+          skills: []
+        };
+      }
+    });
+  }
+
+
+
+getEmployee(id: number) {
+  this.employeeService.getEmployee(id)
+    .subscribe(
+      (employee: IEmployee) => {
+        // Store the employee object returned by the
+        // REST API in the employee property
+        this.employee = employee;
+        this.editEmployee(employee);
+      },
+      (err: any) => console.log(err)
+    );
+}
+
+
+
+editEmployee(employee: IEmployee) {
+  this.employeeForm.patchValue({
+    fullName: employee.fullName,
+    contactPreference: employee.contactPreference,
+    emailGroup: {
+      email: employee.email,
+      confirmEmail: employee.email
+    },
+    phone: employee.phone
+  });
+  
+  this.employeeForm.setControl('skills', this.setExistingSkills(employee.skills));
+}
+
+setExistingSkills(skillSets: ISkill[]): FormArray {
+  const formArray = new FormArray([]);
+  skillSets.forEach(s => {
+    formArray.push(this.fb.group({
+      skillName: s.skillName,
+      experienceInYears: s.experienceInYears,
+      proficiency: s.proficiency
+    }));
+  });
+
+  return formArray;
+}
+  
+
+
+  addSkillButtonClick(): void {
+    (<FormArray>this.employeeForm.get('skills')).push(this.addSkillFormGroup());
+  }
+  
+  removeSkillButtonClick(skillGroupIndex: number): void {
+    const skillsFormArray = <FormArray>this.employeeForm.get('skills');
+    skillsFormArray.removeAt(skillGroupIndex);
+    skillsFormArray.markAsDirty();
+    skillsFormArray.markAsTouched();
+  }
+
+
+  addSkillFormGroup(): FormGroup {
+    return this.fb.group({
+      skillName: ['', Validators.required],
+      experienceInYears: ['', Validators.required],
+      proficiency: ['', Validators.required]
+    });
+  }
+
+
+
+
+
+
+  onContactPrefernceChange(selectedValue: string) {
+    const phoneFormControl = this.employeeForm.get('phone');
+    if (selectedValue === 'phone') {
+      phoneFormControl.setValidators(Validators.required);
+    } else {
+      phoneFormControl.clearValidators();
+    }
+    phoneFormControl.updateValueAndValidity();
+  }
+
+
+
+
+  logValidationErrors(group: FormGroup = this.employeeForm): void {
+  Object.keys(group.controls).forEach((key: string) => {
+    const abstractControl = group.get(key);
+
+    this.formErrors[key] = '';
+    // abstractControl.value !== '' (This condition ensures if there is a value in the
+    // form control and it is not valid, then display the validation error)
+    if (abstractControl && !abstractControl.valid &&
+        (abstractControl.touched || abstractControl.dirty || abstractControl.value !== '')) {
+      const messages = this.validationMessages[key];
+
+      for (const errorKey in abstractControl.errors) {
+        if (errorKey) {
+          this.formErrors[key] += messages[errorKey] + ' ';
+        }
+      }
+    }
+
+    if (abstractControl instanceof FormGroup) {
+      this.logValidationErrors(abstractControl);
+    }
+  });
+}
+
+
+  onLoadDataClick(): void {
+
+     const formArray1 = this.fb.array([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('Male', Validators.required),
+    ]);
+
+    const formGroup = this.fb.group([
+      new FormControl('John', Validators.required),
+      new FormControl('IT', Validators.required),
+      new FormControl('', Validators.required),
+    ]);
+
+     console.log(formArray1);
+     console.log(formGroup);
+     }
+
+
+
+
+
+     onSubmit(): void {
+      this.mapFormValuesToEmployeeModel();
+    
+      if (this.employee.id) {
+        this.employeeService.updateEmployee(this.employee).subscribe(
+          () => this.router.navigate(['list']),
+          (err: any) => console.log(err)
+        );
+      } else {
+        this.employeeService.addEmployee(this.employee).subscribe(
+          () => this.router.navigate(['list']),
+          (err: any) => console.log(err)
+        );
+      }
+    }
+
+
+
+  mapFormValuesToEmployeeModel() {
+    this.employee.fullName = this.employeeForm.value.fullName;
+    this.employee.contactPreference = this.employeeForm.value.contactPreference;
+    this.employee.email = this.employeeForm.value.emailGroup.email;
+    this.employee.phone = this.employeeForm.value.phone;
+    this.employee.skills = this.employeeForm.value.skills;
+  }
+}
+
+
+
+
+
+function emailDomain(domainName: string) {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    const email: string = control.value;
+    const domain = email.substring(email.lastIndexOf('@') + 1);
+    if (email === '' || domain.toLowerCase() === domainName.toLowerCase()) {
+      return null;
+    } else {
+      return { 'emailDomain': true };
+    }
+  };
+  
+}
+
+
+
+function matchEmails(group: AbstractControl): { [key: string]: any } | null {
+  const emailControl = group.get('email');
+  const confirmEmailControl = group.get('confirmEmail');
+  // If confirm email control value is not an empty string, and if the value
+  // does not match with email control value, then the validation fails
+  if (emailControl.value === confirmEmailControl.value
+    || (confirmEmailControl.pristine && confirmEmailControl.value === '')) {
+    return null;
+  } else {
+    return { 'emailMismatch': true };
+  }
+}
+
+---------------------------------------------------------------------------------------------------
+
+31.Angular modules explained |
+Use the following Angular CLI command to create the HomeComponent
+
+ng g c home --flat
+
+Use the following Angular CLI command to create the PageNotFoundComponent
+
+ng g c page-not-found --flat
+
+---------------------------------------------------------------------
+
+Copy and paste the following code in home.component.html
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Employee Management System</h3>
+  </div>
+  <div class="panel-body">
+    <img src="../assets/images/Employees.jpg" class="img-responsive"/>
+  </div>
+</div>
+
+
+----------------------------------------------------------------------Copy and paste the following code in page-not-found.component.html
+
+<h1>
+  The page you are looking for cannot be found.
+</h1>
+
+----------------------------------------------------------------------
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+
+const appRoutes: Routes = [
+  // home route
+  { path: 'home', component: HomeComponent },
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'edit/:id', component: CreateEmployeeComponent },
+  // redirect to the home route if the client side route path is empty
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  // wild card route
+  { path: '**', component: PageNotFoundComponent }
+];
+
+---------------------------------------------------------------------------------------------------------
+
+
+In the root component (app.component.html) include a menu item for the home route
+
+<div class="container">
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <!-- Include this Home menu item for the home route-->
+            <li>
+                <a routerLinkActive="active" routerLink="home">Home</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="list">List</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="create">Create</a>
+            </li>
+        </ul>
+    </nav>
+    <router-outlet></router-outlet>
+</div>
+
+------------------------------------------------------------------------------------------------------------
+32.Creating feature module in angular |
+
+To create this new Employee feature module, let's use Angular CLI. Here is the command.
+
+ng g m employee/employee --flat -m app
+
+coding in "employee.module.ts".
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
+import { CreateEmployeeComponent } from './create-employee.component';
+import { ListEmployeesComponent } from './list-employees.component';
+
+
+@NgModule({
+    imports: [
+    CommonModule,
+    ReactiveFormsModule 
+  ],
+
+  declarations: [
+    CreateEmployeeComponent,
+    ListEmployeesComponent
+
+  ]
+  
+})
+export class EmployeeModule { }
+
+
+---------------------------------------------------------------------------------------------------------
+
+in "app-module.ts"
+
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { EmployeeService } from './employee/employee.service';
+import { EmployeeModule } from './employee/employee.module';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    PageNotFoundComponent
+  ],
+  imports: [ 
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    
+    EmployeeModule
+  ],
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+
+--------------------------------------------------------------------------------------------------------- 
+
+33.Creating feature routing module in angular |
+In the "employee" folder create a new file with name employee-routing.module.ts.
+
+program in "employee-routing.module.ts".
+
+import { NgModule } from '@angular/core';
+// Import RouterModule & Routes type
+import { RouterModule, Routes } from '@angular/router';
+
+// Import all the components that we will be referencing in the route definitions
+
+import { CreateEmployeeComponent } from './create-employee.component';
+ 
+import { ListEmployeesComponent } from './list-employees.component';
+
+// Define the routes
+const appRoutes: Routes = [
+  { path: 'list', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'edit/:id', component: CreateEmployeeComponent },
+];
+
+// In a feature module forChild() method must be used to register routes
+// Export RouterModule, so the it's directives like RouterLink, RouterOutlet
+// are available to the EmployeeModule that imports this module
+@NgModule({
+  imports: [ RouterModule.forChild(appRoutes) ],
+  exports: [ RouterModule ]
+})
+export class EmployeeRoutingModule { }
+
+
+------------------------------------------------------------------------------------------------------------
+
+program in "employee.module.ts"
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { EmployeeRoutingModule } from  './employee-routing.module';
+
+import { CreateEmployeeComponent } from './create-employee.component';
+import { ListEmployeesComponent } from './list-employees.component';
+
+
+@NgModule({
+    imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    EmployeeRoutingModule
+  ],
+
+  declarations: [
+    CreateEmployeeComponent,
+    ListEmployeesComponent
+
+  ]
+  
+})
+export class EmployeeModule { }
+
+
+------------------------------------------------------------------------------------------------------------
+
+Program in "app-routing.module.ts".
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+  
+
+
+
+const appRoutes: Routes = [
+  
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '**', component: PageNotFoundComponent }
+ 
+];
+
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+------------------------------------------------------------------------------------------------------------
+
+Program in "app.module.ts"
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+
+
+
+import { AppRoutingModule } from './app-routing.module';
+import { EmployeeService } from './employee/employee.service';
+import { EmployeeModule } from './employee/employee.module';
+
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+
+
+
+@NgModule({
+  declarations: [
+    AppComponent,
+    HomeComponent,
+    PageNotFoundComponent
+  ],
+  imports: [ 
+    BrowserModule,
+    HttpClientModule,
+    EmployeeModule,
+    AppRoutingModule,
+  ],
+  providers: [EmployeeService],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+
+
+------------------------------------------------------------------------------------------------------------
+
+34.Creating shared module in angular | 
+
+Use the following Angular CLI command to generate a SharedModule
+
+ng g m shared/shared --flat -m employee/employee
+
+program in "shared.module.ts".
+
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+
+
+
+@NgModule({
+  declarations: [],
+
+  imports: [],
+
+  exports: [
+    CommonModule,
+    ReactiveFormsModule
+  ]
+})
+export class SharedModule { }
+
+
+---------------------------------------------------------------------------------------------------
+
+Program in "employee.module.ts"
+
+import { NgModule } from '@angular/core';
+
+import { EmployeeRoutingModule } from  './employee-routing.module';
+
+import { CreateEmployeeComponent } from './create-employee.component';
+import { ListEmployeesComponent } from './list-employees.component';
+import { SharedModule } from '../shared/shared.module';
+
+
+@NgModule({
+    imports: [
+    EmployeeRoutingModule,
+    SharedModule
+  ],
+
+  declarations: [
+    CreateEmployeeComponent,
+    ListEmployeesComponent
+
+  ]
+  
+})
+export class EmployeeModule { }
+
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+35.Grouping routes and creating component less route in angular |
+
+Step-1,
+ "employee-routing.module.ts"
+
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CreateEmployeeComponent } from './create-employee.component';
+import { ListEmployeesComponent } from './list-employees.component';
+
+
+const appRoutes: Routes = [
+  {
+    path: 'employees',
+    children: [
+      { path: '', component: ListEmployeesComponent },
+      { path: 'create', component: CreateEmployeeComponent },
+      { path: 'edit/:id', component: CreateEmployeeComponent },
+    ]
+  }
+];
+
+
+
+@NgModule({
+  imports: [ RouterModule.forChild(appRoutes) ],
+  exports: [ RouterModule ]
+})
+export class EmployeeRoutingModule { }
+
+
+------------------------------------------------------------------------------------------------------------
+
+Step-2,
+ in "app.component.html"
+<div class="container">
+    <nav class="navbar navbar-default">
+        <ul class="nav navbar-nav">
+            <!-- Include this Home menu item for the home route-->
+            <li>
+                <a routerLinkActive="active" routerLink="home">Home</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="employees">List</a>
+            </li>
+            <li>
+                <a routerLinkActive="active" routerLink="employees/create">Create</a>
+            </li>
+        </ul>
+    </nav>
+    <router-outlet></router-outlet>
+</div>
+
+
+------------------------------------------------------------------------------------------------------------
+
+Step-3,
+
+In list-employees.component.ts, modify the code to redirect to the new EDIT route (employees/edit/id)
+
+editButtonClick(employeeId: number) {
+  this._router.navigate(['/employees/edit', employeeId]);
+}
+
+------------------------------------------------------------------------------------------------------------
+
+Step-4
+
+In create-employee.component.ts, modify the code to redirect to the new 'employees' route
+
+onSubmit(): void {
+  this.mapFormValuesToEmployeeModel();
+  if (this.employee.id) {
+    this.employeeService.updateEmployee(this.employee).subscribe(
+      () => this.router.navigate(['employees']),
+      (err: any) => console.log(err)
+    );
+  } else {
+    this.employeeService.addEmployee(this.employee).subscribe(
+      () => this.router.navigate(['employees']),
+      (err: any) => console.log(err)
+    );
+  }
+}
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+36.Lazy loading in angular |
+
+Step-1,
+"app-routing.module.ts"
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+  
+
+
+
+const appRoutes: Routes = [
+  
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'employees', loadChildren: './employee/employee.module#EmployeeModule' },
+  { path: '**', component: PageNotFoundComponent }
+  
+ 
+];
+
+
+
+@NgModule({
+  imports: [RouterModule.forRoot(appRoutes)],
+  
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+-------------------------------------------------------------------------------------------------------
+
+Step-2,
+program in "employee-routing.module.ts"
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CreateEmployeeComponent } from './create-employee.component';
+import { ListEmployeesComponent } from './list-employees.component';
+
+
+const appRoutes: Routes = [
+  { path: '', component: ListEmployeesComponent },
+  { path: 'create', component: CreateEmployeeComponent },
+  { path: 'edit/:id', component: CreateEmployeeComponent },
+];
+
+
+
+@NgModule({
+  imports: [ RouterModule.forChild(appRoutes) ],
+  exports: [ RouterModule ]
+})
+export class EmployeeRoutingModule { }
+
+
+------------------------------------------------------------------------------------------------------------	
+
+37.Preloading angular modules |
+
+Program in "app-routing.module.ts"
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+  
+
+
+
+const appRoutes: Routes = [
+  
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'employees', loadChildren: './employee/employee.module#EmployeeModule' },
+  { path: '**', component: PageNotFoundComponent }
+  
+ 
+];
+
+
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes, { preloadingStrategy: PreloadAllModules  })
+  ],
+  
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+-----------------------------------------------------------------------------------------------------------	
+
+38.Angular custom preloading strategy |
+Step 1 : To create a Custom Preloading Strategy, create a service that implements Angular's built-in PreloadingStrategy abstract class
+
+To generate the service, use the following Angular CLI command
+
+//ng g s CustomPreloading//
+
+coding in "custom-preloading.service.ts"
+
+import { Injectable } from '@angular/core';
+import { PreloadingStrategy, Route } from '@angular/router';
+import { Observable, of } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+// Since we are creating a Custom Preloading Strategy, this service
+// class must implement PreloadingStrategy abstract class
+export class CustomPreloadingService implements PreloadingStrategy {
+
+  constructor() { }
+
+  // PreloadingStrategy abstract class has the following preload()
+  // abstract method for which we need to provide implementation
+  preload(route: Route, fn: () => Observable<any>): Observable<any> {
+    // If data property exists on the route of the lazy loaded module
+    // and if that data property also has preload property set to
+    // true, then return the fn() which preloads the module
+    if (route.data && route.data['preload']) {
+      return fn();
+    // If data property does not exist or preload property is set to
+    // false, then return Observable of null, so the module is not
+    // preloaded in the background
+    } else {
+      return of(null);
+    }
+  }
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+Step-2,
+
+Program in "app-routing.module.ts"
+
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { CustomPreloadingService } from './custom-preloading.service';
+import { HomeComponent } from './home.component';
+import { PageNotFoundComponent } from './page-not-found.component';
+  
+
+
+
+const appRoutes: Routes = [
+  
+  { path: 'home', component: HomeComponent },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'employees',
+  data: { preload: true },
+  loadChildren: './employee/employee.module#EmployeeModule'
+  },
+  { path: '**', component: PageNotFoundComponent }
+  
+ 
+];
+
+
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(appRoutes, { preloadingStrategy: CustomPreloadingService  })
+  ],
+  
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+
+----------------------------------------The End --------------------------------------------------------
+
+
+
+
